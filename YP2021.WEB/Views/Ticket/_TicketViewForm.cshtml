@@ -1,0 +1,175 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+
+@*<div class="card-body">
+        {{FormModel | json}}
+    </div>*@
+
+<div class="card" ng-show="ShowingDiv=='view'" ng-cloak>
+    @*<button class="btn btn-link" ng-click="ExportOrderToExcel()">
+            <span class="glyphicon glyphicon-share"></span> Excele Aktar
+        </button>*@
+    <div class="card-body p0">
+        <header class="card-header alt-title">
+            <div class="row">
+                <div class="col-md-11">
+                    <button class="btn geri-btn" type="button" ng-click="BackToList()"><i class="fas fa-reply text-white"></i></button>
+                    <h2 ng-bind="'Sipariş > ' + OrderHeaderText"></h2>
+                </div>
+                <div class="col-md-1">
+                    <label><a href="javascript:void(0);" class="text-success pull-right" ng-click="ExportOrderToExcel()"><i class="fas fa-3x fa-file-excel"></i></a></label>
+                    <label><a href="javascript:void(0);" class="text-danger pull-right" ng-click="ExportOrderToPDF()"><i class="fas fa-3x fa-file-pdf"></i></a></label>
+                </div>
+            </div>
+        </header>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">Sipariş No</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.OrderNo">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">MÜŞTERİ ADI</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.FIRMA_ADI">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">M.TEMSİLCİSİ</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.MTemsilcisi">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">SİPARİŞ TARİHİ</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.OrderDate">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">E.TARİHİ</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.CreatedOn">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">EKLEYEN</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.Hazirlayan">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">G.TARİHİ</label>
+                        <div class="col-sm-12">
+                            <span type="text" class="form-control" ng-bind-html="FormModel.UpdatedOn"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">GÜNCELLEYEN</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.Guncelleyen">
+                        </div>
+                    </div>
+                </div>
+                @*<div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Sipariş Durumu</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.Status">
+                            </div>
+                        </div>
+                    </div>*@
+                <div class="col-md-12 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">Detaylar</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <scrollable-table watch="FormModel.OrderItems">
+                        <table class="table table-striped table-bordered" @*id="excel1"*@>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    @*<th>ProductID</th>*@
+                                    <th>MÜŞTERİ ÜRÜN NO</th>
+                                    <th>BuCode</th>
+                                    <th>ÜRÜN ADI EN</th>
+                                    <th>Adet</th>
+                                    <th>Birim Fiyat</th>
+                                    <th>Toplam Fiyat</th>
+                                    <th>P.B.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-show="FormModel.OrderItems.length == 0">
+                                    <td colspan="13">Boş liste.</td>
+                                </tr>
+                                <tr ng-repeat="item in FormModel.OrderItems | orderBy: 'ORDID'">
+                                    <td class="text-right" ng-bind="$index+1"></td>
+                                    @*<td ng-bind="item.ProductID"></td>*@
+                                    <td ng-bind="item.CustomerCode"></td>
+                                    <td ng-bind="item.BuCode"></td>
+                                    <td ng-bind="item.NAME_EN"></td>
+                                    <td class="text-right" ng-bind="item.Quantity"></td>
+                                    <td class="text-right" ng-bind="item.UnitPrice"></td>
+                                    <td class="text-right" ng-bind="(item.Quantity * item.UnitPrice) || ''"></td>
+                                    <td ng-bind="item.CurrencyCode"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </scrollable-table>
+                </div>
+            </div>
+        </div>
+        <footer class="card-footer">
+            <div class="d-flex justify-content-end">
+                <button class="btn pink-btn" ng-click="Edit(FormModel.OrderID)">Düzenle</button>
+                @*<input type="button" class="btn btn-danger" value="Sil" ng-click="deleteProduct()" />*@
+                @*<button class="btn btn-default modal-dismiss">Kapat</button>*@
+            </div>
+        </footer>
+    </div>
+
+</div>
+
+

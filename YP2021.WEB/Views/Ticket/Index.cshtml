@@ -1,0 +1,116 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+    }
+</style>
+<link href="~/css/select.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">*@
+<link rel="stylesheet" href="~/css/select2.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+<style>
+    .select2 > .select2-choice.ui-select-match {
+        /* Because of the inclusion of Bootstrap */
+        height: 29px;
+    }
+
+    .selectize-control > .selectize-dropdown {
+        top: 36px;
+    }
+    /* Some additional styling to demonstrate that append-to-body helps achieve the proper z-index layering. */
+    .select-box {
+        background: #fff;
+        position: relative;
+        z-index: 1;
+    }
+
+    .alert-info.positioned {
+        margin-top: 1em;
+        position: relative;
+        z-index: 10000; /* The select2 dropdown has a z-index of 9999 */
+    }
+
+    .ui-select-bootstrap > .ui-select-choices, .ui-select-bootstrap > .ui-select-no-choice {
+        display: block;
+    }
+</style>
+
+@*<link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />*@
+
+<section role="main" class="content-body" ng-init="Init(@ViewBag.View, @ViewBag.Add, @ViewBag.Update, @ViewBag.Delete, @Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.TicketTypes))" ng-cloak>
+    <header class="page-header">
+        <h2>Ticket</h2>
+
+        <div class="right-wrapper text-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li><span>Ticket</span> </li>
+            </ol>
+            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>
+        </div>
+    </header>
+
+    @*@{ Html.RenderPartialIf("_MenuBar", Request.IsAuthenticated); }*@
+
+    <!-- start: page -->
+    @{ Html.RenderPartialIf("_TicketListForm", Request.IsAuthenticated); }
+    @*@{ Html.RenderPartialIf("_TicketViewForm", Request.IsAuthenticated); }*@
+    @{ Html.RenderPartialIf("_TicketDetailForm", Request.IsAuthenticated); }
+    @*@{ Html.RenderPartialIf("_TicketReplyPopupForm", Request.IsAuthenticated); }*@
+    @{ Html.RenderPartialIf("_TicketNewForm", Request.IsAuthenticated); }
+    <!-- end: page -->
+</section>
+
+@section Scripts {
+    <script src="~/js/dirPagination.js"></script>
+
+    @*<script type="text/javascript" src="https://rawgit.com/Gary-Li/angular-scrollable-table/master/angular-scrollable-table.js"></script>*@
+    @*<script src="~/js/angular-scrollable-table.js"></script>*@
+    @*<script src="~/Scripts/textAngular-sanitize.min.js"></script>
+        <script src="~/Scripts/textAngular.min.js"></script>*@
+    <script src="~/js/angularjs/ticket.js?@DateTime.Now.Ticks"></script>
+    @*<script src="~/js/examples/examples.datatables.default.js"></script>*@
+    <script src="~/js/mask.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    @*<script src="~/Scripts/fileuploader.js"></script>*@
+    @*<script src="~/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>*@
+    @*<script src="~/js/bootstrap-datepicker.tr.js"></script>*@
+
+    <script src="~/angular-1.5.9/angular-animate.min.js"></script>
+    <script src="~/angular-1.5.9/angular-touch.min.js"></script>
+
+
+    <script src="https://cdn.ckeditor.com/4.5.3/full/ckeditor.js"></script>
+    <script src="https://rawgit.com/lemonde/angular-ckeditor/master/angular-ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+    <script src="~/js/select.js"></script>
+
+    <script type="text/javascript">
+
+        $(':input[type="number"]').on('keypress', function () { preventDot(event) });
+
+        function preventDot(event) {
+            //alert(event.charCode)
+            //var test = document.getElementById("#age");
+            var key = event.charCode ? event.charCode : event.keyCode;
+            $("#age").innerHTML = key;
+            if (key == 46) {
+                event.preventDefault();
+                return false;
+            }
+        }
+    </script>
+
+}

@@ -1,0 +1,64 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<div class="row" ng-show="ShowingDiv=='Liste'" ng-cloak>
+    @*|| ShowingDiv=='detail'*@
+    <div class="col">
+        <section class="card card-primary">
+
+            <header class="card-header">
+                <!-- <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div> -->
+                @*<h2 class="card-title">Ürün Listesi <button id="addToTable" class="btn btn-success pull-right" ng-click="AddItem()">Ürün Ekle <i class="fas fa-plus"></i></button></h2>*@
+                <div class="row">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <h2 class="card-title"><i class="fal fa-list"></i> Ana Kategori Listesi</h2>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center justify-content-end" ng-show="Permission.Add == 1">
+                        <button id="addToTable" class="btn btn-success pull-right" ng-click="AddItem()">Ana Kategori Ekle <i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+
+                <form class="form-horizontal mb-4" style="margin-bottom:50px;" name="SearchForm" id="SearchForm" novalidate ng-submit="Filtrele()" @*ng-submit="Search(SearchForm.$valid)"*@>
+                    <div class="row">
+                        <div class="col-xl-3 mb-20">
+                            <select class="form-control" ng-model="FilterFormModel.SECID"
+                                    ng-options="item.SECID as item.NAME for item in ProductSections">
+                                <option value="">--Reyon--</option>
+                            </select>
+                        </div>
+
+                        <div class="col-xl-2 mb-20">
+                            <input type="submit" id="btnCri" @*ng-click="Filtrele()"*@ value="Listele" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </form>
+
+                <table id="entry-grid" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" class="table table-bordered table-striped mb-0 " @*class="table table-hover nowrap"*@></table>
+            </div>
+        </section>
+    </div>
+</div>

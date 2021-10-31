@@ -1,0 +1,25 @@
+﻿<!-- Modal Form -->
+<div id="modalMProductDeleteForm" class="modal-block modal-block-primary mfp-hide sil-modal">
+    <section class="card">
+        <header class="card-header">
+            <h2 class="card-title">Müşteri Ürünü Sil</h2>
+        </header>
+        <div class="card-body">
+
+            <div class="card-body">
+                "{{DeletingMProductName}}" ürünü silinecektir. Devam etmek için Sil butonuna basarak devam edebilirsiniz.
+            </div>
+
+        </div>
+        <footer class="card-footer">
+            <div class="row justify-content-end">
+                @*<button class="btn btn-primary">Submit</button>*@
+                <input type="button" class="btn btn-danger mr-10" value="Sil" ng-click="deleteMProduct()" />
+                <button class="btn btn-default modal-dismiss">Kapat</button>
+            </div>
+        </footer>
+    </section>
+</div>
+
+
+

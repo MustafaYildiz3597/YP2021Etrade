@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "şifre Değistir";
+}
+
+@*<h2>SifreDegistir</h2>*@
+
+
+<section role="main" class="content-body" ng-cloak>
+    <header class="page-header">
+        <h2 ng-bind="PageHeaderText"></h2>
+
+        <div class="right-wrapper text-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li><span ng-bind="PageBreadCrumb"></span></li>
+            </ol>
+
+            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>
+        </div>
+    </header>
+
+    <div class="row">
+
+        <div class="col">
+            <header class="card-header">
+                <div class="card-actions">
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="card-title">Şifre Değiştirme</h2>
+                    </div>
+                    <div class="col-md-6 text-right">
+                    </div>
+                </div>
+            </header>
+
+            <div class="card-body" ng-show="ShowingDiv=='tebrikler'" ng-cloak>
+                <div class="form-group row">
+                    <p class="col-lg-12 center">
+                        Şifreniz başarılı bir şekilde değiştirildi.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card-body" ng-show="ShowingDiv=='form'" ng-cloak>
+                @*{{Otpkey}} {{OTPVerifyID}}*@
+                <div class="card-body">
+                    <form name="changePasswordForm" novalidate ng-submit="submit(changePasswordForm.$valid)">
+
+                        @*{{changePasswordForm}}*@
+
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-lg-3 control-label text-lg-right pt-2" for="Password">Şifreniz</label>
+                                <div class="col-lg-6">
+                                    <input type="password" class="form-control" name="Password" maxlength="32" ng-model="changePassword.user.password" autocomplete="off" required>
+                                    <span style="width:100%;" ng-show="(changePasswordForm.Password.$dirty || changePasswordForm.$submitted) && changePasswordForm.Password.$invalid">
+                                        <label class="error" ng-show="changePasswordForm.Password.$error.required">Zorunlu Alan</label>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 control-label text-lg-right pt-2" for="Newpassword">Yeni Şifre</label>
+                                <div class="col-lg-6">
+                                    <input type="password" class="form-control" name="Newpassword" maxlength="32" ng-model="changePassword.user.newpassword" autocomplete="off" required>
+                                    <div>Şifreniz En az 8 karakter, küçük harf büyük harf rakam ve özel karakter içermelidir.</div>
+                                    <span style="width:100%;" ng-show="(changePasswordForm.Newpassword.$dirty || changePasswordForm.$submitted) && changePasswordForm.Newpassword.$invalid">
+                                        <label class="error" ng-show="changePasswordForm.Newpassword.$error.required">Zorunlu Alan</label>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 control-label text-lg-right pt-2" for="confirmPassword">Yeni Şifre (Tekrar)</label>
+                                <div class="col-lg-6">
+                                    <input type="password" class="form-control" name="confirmPassword" maxlength="32" ng-model="changePassword.user.confirmPassword" autocomplete="off" required compare-to="changePassword.user.newpassword">
+                                    <span style="width:100%;" ng-show="(changePasswordForm.confirmPassword.$dirty || changePasswordForm.$submitted) && changePasswordForm.confirmPassword.$invalid">
+                                        <label class="error" ng-show="changePasswordForm.confirmPassword.$error.required">Zorunlu Alan</label>
+                                        <label class="error" ng-show="changePasswordForm.confirmPassword.$error.compareTo">Şifre ve tekrarı eşleşmiyor</label>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <footer class="card-footer">
+                            <div class="row justify-content-end">
+                                <div class="col-sm-6">
+                                    <button type="submit" class="btn btn-info btn-xl ">Şifre Değiştir</button>
+                                </div>
+                            </div>
+                        </footer>
+
+
+                    </form>
+
+
+                    @*<form name="changePasswordForm" novalidate ng-submit="changePassword.submit(changePasswordForm.$valid)">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Şifre <span style="color:red">*</span></label>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control" name="password" maxlength="16" ng-model="changePassword.user.password"
+                                       ng-minlength="5"
+                                       ng-maxlength="16" autocomplete="off"
+                                       required>
+                                <div style="color:red" ng-messages="changePasswordForm.password.$error" ng-if="changePasswordForm.password.$dirty"
+                                     ng-messages-include="/content/changepassmsgs.html"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Şifre Tekrar <span style="color:red">*</span></label>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control" name="confirmPassword" maxlength="16" ng-model="changePassword.user.confirmPassword"
+                                       ng-minlength="5"
+                                       ng-maxlength="16" autocomplete="off"
+                                       required
+                                       compare-to="changePassword.user.password">
+                                <div style="color:red" ng-messages="changePasswordForm.confirmPassword.$error" ng-if="changePasswordForm.confirmPassword.$dirty" ng-messages-include="/content/changepassmsgs.html"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-8">
+                                <button type="submit" class="btn btn-info btn-xl ">Şifre Değiştir</button>
+                            </div>
+                        </div>
+                    </form>*@
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+<script src="~/js/angularjs/sifredegistir.js"></script>
+}

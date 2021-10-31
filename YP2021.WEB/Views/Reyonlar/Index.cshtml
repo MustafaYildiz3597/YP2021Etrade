@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "NERO - Reyonlar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="~/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />*@
+<link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
+@*<link href='https://rawgit.com/Gary-Li/angular-scrollable-table/master/scrollable-table.css' rel="stylesheet" type="text/css">*@
+@*<link href="~/angular-scrollable-table/master/scrollable-table.css" rel="stylesheet" />*@
+@*<link rel="stylesheet" href="~/vendor/datatables/media/css/dataTables.bootstrap4.css" />*@
+@*<link href="~/angular-photo-slider-master/css/styles.css" rel="stylesheet" />*@
+
+<style>
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+    }
+
+    table.dataTable tbody th,
+    table.dataTable tbody td {
+        white-space: nowrap;
+    }
+
+    .scrollableContainer {
+        height: 600px;
+        position: relative;
+        padding-top: 35px;
+        overflow: hidden;
+    }
+
+</style>
+
+
+<section role="main" class="content-body" ng-init="Init('@ViewBag.FirmID', @ViewBag.View, @ViewBag.Add, @ViewBag.Update, @ViewBag.Delete)">
+    <header class="page-header">
+        <h2>Reyonlar</h2>
+
+        <div class="right-wrapper text-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li><span>Reyonlar</span> </li>
+                <li><span ng-bind="breadcrumbs"></span> </li>
+            </ol>
+
+            <a class="sidebar-right-toggle" @*data-open="sidebar-right"*@><i class="fas fa-chevron-left"></i></a>
+        </div>
+    </header>
+
+    @*@{ Html.RenderPartialIf("_MenuBar", Request.IsAuthenticated); }*@
+
+    <!-- start: page -->
+    @{ Html.RenderPartialIf("_ReyonlarListForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_ReyonlarDetailForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_ReyonlarViewForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_ReyonlarDeletePopupForm", Request.IsAuthenticated); }
+
+    <!-- end: page -->
+</section>
+
+@section Scripts {
+    @*<script type="text/javascript" src="https://rawgit.com/Gary-Li/angular-scrollable-table/master/angular-scrollable-table.js"></script>*@
+    @*<script src="~/angular-scrollable-table/master/angular-scrollable-table.js"></script>*@
+    @*<script src="~/js/angular-scrollable-table.js"></script>*@
+
+    @*<script src="~/Scripts/textAngular-sanitize.min.js"></script>
+    <script src="~/Scripts/textAngular.min.js"></script>*@
+
+    <script src="~/js/angularjs/reyonlar.js?@DateTime.Now.Ticks"></script>
+    <script src="~/js/examples/examples.datatables.default.js"></script>
+    <script src="~/js/mask.js"></script>
+   
+    <script src="~/Scripts/moment.min.js"></script>
+ 
+}
+
+

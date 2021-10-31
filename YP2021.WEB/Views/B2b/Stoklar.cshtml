@@ -1,0 +1,101 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+    }
+</style>
+<link href="~/css/select.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">*@
+<link rel="stylesheet" href="~/css/select2.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
+
+<style>
+    .select2 > .select2-choice.ui-select-match {
+        /* Because of the inclusion of Bootstrap */
+        height: 29px;
+    }
+
+    .selectize-control > .selectize-dropdown {
+        top: 36px;
+    }
+    /* Some additional styling to demonstrate that append-to-body helps achieve the proper z-index layering. */
+    .select-box {
+        background: #fff;
+        position: relative;
+        z-index: 1;
+    }
+
+    .alert-info.positioned {
+        margin-top: 1em;
+        position: relative;
+        z-index: 10000; /* The select2 dropdown has a z-index of 9999 */
+    }
+
+    .ui-select-bootstrap > .ui-select-choices, .ui-select-bootstrap > .ui-select-no-choice {
+        display: block;
+    }
+</style>
+
+@*<link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />*@
+
+<section role="main" class="content-body" ng-init="Init(@ViewBag.View, @ViewBag.Add, @ViewBag.Update, @ViewBag.Delete)" ng-cloak>
+    <header class="page-header">
+        <h2>B2B</h2>
+
+        <div class="right-wrapper text-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li><span>B2B Stoklar</span> </li>
+            </ol>
+            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>
+        </div>
+    </header>
+
+    @*@{ Html.RenderPartialIf("_MenuBar", Request.IsAuthenticated); }*@
+
+    <!-- start: page -->
+    @{ Html.RenderPartialIf("_StoklarListForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_StoklarViewPopupForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_StoklarDetailPopupForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_StoklarDeletePopupForm", Request.IsAuthenticated); }
+
+    <!-- end: page -->
+</section>
+
+@section Scripts {
+
+    <script src="~/js/dirPagination.js"></script>
+
+    <script src="~/js/angularjs/b2bstoklar.js?@DateTime.Now.Ticks"></script>
+    <script src="~/js/mask.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    @*<script src="~/Scripts/fileuploader.js"></script>*@
+    @*<script src="~/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>*@
+    @*<script src="~/js/bootstrap-datepicker.tr.js"></script>*@
+    <script src="~/js/select.js"></script>
+
+    <script type="text/javascript">
+
+        $(':input[type="number"]').on('keypress', function () { preventDot(event) });
+
+        function preventDot(event) {
+            //alert(event.charCode)
+            //var test = document.getElementById("#age");
+            var key = event.charCode ? event.charCode : event.keyCode;
+            $("#age").innerHTML = key;
+            if (key == 46) {
+                event.preventDefault();
+                return false;
+            }
+        }
+    </script>
+
+}

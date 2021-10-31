@@ -1,0 +1,703 @@
+﻿@{
+    /**/
+
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<div class="row" ng-show="ShowingDiv=='detail'" ng-cloak>
+    <form class="form-horizontal" name="DetailForm" id="DetailForm" style="width:100%" novalidate ng-submit="Save(DetailForm.$valid)">
+        @*<div class="card-body">
+                {{FormModel}}
+            </div>*@
+        <section class="card">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn geri-btn" type="button" ng-click="BackToList()" style="margin-top:10px"><i class="fas fa-reply"></i></button>
+                        <h2 class="card-title">Ürün Detay Formu <span class="badge badge-success" ng-show="FormModel.IsBundled==true">Paket Ürün</span></h2>
+                        <span ng-bind="'BUKOD: ' + FormModel.BUKOD"></span>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center justify-content-end">
+                        <a href="javascript:void(0);" ng-click="BundleUnbundleProduct()" class="btn pull-right mr-2" ng-class="{'btn-primary': FormModel.IsBundled!=true,'btn-danger': FormModel.IsBundled==true}">{{FormModel.IsBundled==true ? "Paket Ürünü Kaldır" : "Paket Ürün Yap" }} <i ng-class="{'fas fa-box text-white': FormModel.IsBundled!=true,'fas fa-trash-alt text-white': FormModel.IsBundled==true}"></i></a>
+                        @*<a href="javascript:void(0);" ng-show="FormModel.IsBundled==true" ng-click="CancelBundleProduct()" class="btn btn-danger pull-right mr-2">Paket Ürünü Çöz <i class= text-white'></i></a>*@
+                        <input type="submit" class="btn pink-btn" value="Kaydet" />
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+
+                <div class="row text-danger text-lg-center" ng-show="DetailForm.$submitted && !DetailForm.$valid">
+                    Zorunlu alanları doldurunuz.
+                </div>
+                <div class="tabbable tabs-vertical">
+                    <ul class="nav nav-tabs">
+                        <li ng-class="getTabClass(1)" ng-click="setActiveTab(1)"><a href="#productinfo" data-toggle="tab">Ürün Bilgileri</a></li>
+                        <li ng-class="getTabClass(2)" ng-click="setActiveTab(2)"><a href="#productdesc" data-toggle="tab">Ürün Detay</a></li>
+                        <li ng-class="getTabClass(3)" ng-click="setActiveTab(3)"><a href="#productpic" data-toggle="tab">Ürün Resim</a></li>
+                        <li ng-class="getTabClass(4)" ng-click="setActiveTab(4)"><a href="#productother" data-toggle="tab">Diğer Detaylar</a></li>
+                        <li ng-class="getTabClass(5)" ng-click="setActiveTab(5)"><a href="#barcode" data-toggle="tab">Etiket Barkod</a></li>
+                        <li ng-class="getTabClass(6)" ng-click="setActiveTab(6)"><a href="#b2b" data-toggle="tab">b2b</a></li>
+                        <li ng-class="getTabClass(7)" ng-click="setActiveTab(7)"><a href="#relateds" data-toggle="tab">İlgili Ürünler</a></li>
+                        <li ng-class="getTabClass(8)" ng-click="setActiveTab(8)"><a href="#bundled" data-toggle="tab" ng-show="FormModel.IsBundled==true">Paket Ürün</a></li>
+                        @*<li ng-class="getTabClass(4)" ng-click="setActiveTab(4)"><a href="#rating" data-toggle="tab">Rating</a></li>*@
+                    </ul>
+                    <div class="tab-content">
+
+                        <div ng-class="getTabPaneClass(1)" id="productinfo">
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="BUKOD">BUKOD <span class="required">*</span></label>
+                                            <div class="col-lg-12">
+                                                <input type="text" class="form-control" ng-class="{'error': (DetailForm.BUKOD.$dirty || DetailForm.$submitted) && DetailForm.BUKOD.$invalid}" id="BUKOD" name="BUKOD" ng-model="FormModel.BUKOD" autocomplete="off" maxlength="256" required />
+                                                <span style="width:100%;" ng-show="(DetailForm.BUKOD.$dirty || DetailForm.$submitted) && DetailForm.BUKOD.$invalid">
+                                                    <label class="error" ng-show="DetailForm.BUKOD.$error.required">Zorunlu Alan</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="cmbProductSegment">Segment</label>
+                                            <div class="col-lg-12">
+                                                <select class="form-control" ng-class="{'error': (DetailForm.cmbProductSegment.$dirty || DetailForm.$submitted) && DetailForm.cmbProductSegment.$invalid}" name="cmbProductSegment" ng-model="FormModel.SECID"
+                                                        ng-options="psecitemD.SECID as psecitemD.NAME for psecitemD in ProductSections" required>
+                                                    <option value="">--Seçiniz--</option>
+                                                </select>
+                                                <span style="width:100%;" ng-show="(DetailForm.cmbProductSegment.$dirty || DetailForm.$submitted) && DetailForm.cmbProductSegment.$invalid">
+                                                    <label class="error" ng-show="DetailForm.cmbProductSegment.$error.required">Zorunlu Alan</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="cmbProductMCat">Ana Kategoriler</label>
+                                            <div class="col-lg-12">
+                                                <select class="form-control" ng-class="{'error': (DetailForm.cmbProductMCat.$dirty || DetailForm.$submitted) && DetailForm.cmbProductMCat.$invalid}" name="cmbProductMCat" ng-model="FormModel.MCATID"
+                                                        ng-options="pmcatitemD.MCATID as pmcatitemD.NAME for pmcatitemD in ProductMainCategories | filter:criMatchMaincat()" required>
+                                                    <option value="">--Seçiniz--</option>
+                                                </select>
+                                                <span style="width:100%;" ng-show="(DetailForm.cmbProductMCat.$dirty || DetailForm.$submitted) && DetailForm.cmbProductMCat.$invalid">
+                                                    <label class="error" ng-show="DetailForm.cmbProductMCat.$error.required">Zorunlu Alan</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="cmbProductCat">Kategoriler</label>
+                                            <div class="col-lg-12">
+                                                <select class="form-control" ng-class="{'error': (DetailForm.cmbProductCat.$dirty || DetailForm.$submitted) && DetailForm.cmbProductCat.$invalid}" name="cmbProductCat" ng-model="FormModel.CATID"
+                                                        ng-options="item.CATID as item.NAME for item in ProductCategories | filter:criMatchCat()" required>
+                                                    <option value="">--Seçiniz--</option>
+                                                </select>
+                                                <span style="width:100%;" ng-show="(DetailForm.cmbProductCat.$dirty || DetailForm.$submitted) && DetailForm.cmbProductCat.$invalid">
+                                                    <label class="error" ng-show="DetailForm.cmbProductCat.$error.required">Zorunlu Alan</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="ProductName">Ürün Adı <span class="required">*</span></label>
+                                            <div class="col-lg-12">
+                                                <input type="text" class="form-control" ng-class="{'error': (DetailForm.ProductName.$dirty || DetailForm.$submitted) && DetailForm.ProductName.$invalid}" id="ProductName" name="ProductName" ng-model="FormModel.NAME" autocomplete="off" maxlength="256" required />
+                                                <span style="width:100%;" ng-show="(DetailForm.ProductName.$dirty || DetailForm.$submitted) && DetailForm.ProductName.$invalid">
+                                                    <label class="error" ng-show="DetailForm.ProductName.$error.required">Zorunlu Alan</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="ProductNameEN">Ürün Adı EN </label>
+                                            <div class="col-lg-12">
+                                                <input type="text" class="form-control" id="ProductNameEN" name="ProductNameEN" ng-model="FormModel.NAME_EN" autocomplete="off" maxlength="256" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="ProductNameDE">Ürün Adı DE </label>
+                                            <div class="col-lg-12">
+                                                <input type="text" class="form-control" id="ProductNameDE" name="ProductNameDE" ng-model="FormModel.NAME_DE" autocomplete="off" maxlength="256" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="ProductNameFR">Ürün Adı FR </label>
+                                            <div class="col-lg-12">
+                                                <input type="text" class="form-control" id="ProductNameFR" name="ProductNameFR" ng-model="FormModel.NAME_FR" autocomplete="off" maxlength="256" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="IsActive">Aktif/Pasif</label>
+                                            <div class="col-lg-12">
+                                                <div class="checkbox-default">
+                                                    <input type="checkbox" id="IsActive" name="IsActive" ng-true-value="true" ng-false-value="false" ng-model="FormModel.ENABLED">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20" ng-show="FormModel.PRODID != null">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label">Ekleyen</label>
+                                            <div class="col-lg-12">
+                                                <p class="form-control-static" ng-bind="FormModel.ADDEDBY"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20" ng-show="FormModel.PRODID != null">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label">Eklenme Tarihi</label>
+                                            <div class="col-lg-12">
+                                                <p class="form-control-static" ng-bind="FormModel.ADDED | date:'dd/MM/yyyy'"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20" ng-show="FormModel.PRODID != null">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label">Son Güncelleyen </label>
+                                            <div class="col-lg-12">
+                                                <p class="form-control-static" ng-bind="FormModel.UPDATEDBY"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20" ng-show="FormModel.PRODID != null">
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label">Güncellenme Tarihi</label>
+                                            <div class="col-lg-12">
+                                                <p class="form-control-static" ng-bind="FormModel.UPDATED | date:'dd/MM/yyyy'"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<footer class="card-footer">
+                <div class="row justify-content-end">
+                    <div class="col-sm-6">
+                        <input type="submit" class="btn btn-primary" value="Kaydet" />
+                    </div>
+                </div>
+            </footer>*@
+                        </div>
+
+                        <div ng-class="getTabPaneClass(2)" id="productdesc">
+                            <div class="row">
+                                <div class="col-md-12 mb-20">
+                                    <div class="form-group row">
+                                        <label class="col-lg-12 control-label" for="EDITOR_TABLE">Açıklama </label>
+                                        <div class="col-lg-12">
+                                            <div class="form-content" ckeditor="data.options" ng-model="FormModel.EDITOR_TABLE"></div>
+                                            @*<text-angular name="EDITOR_TABLE" class="form-content" ng-model="FormModel.EDITOR_TABLE"></text-angular>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-20">
+                                    <div class="form-group row">
+                                        <label class="col-lg-12 control-label" for="EDITOR_TABLE_EN">Açıklama EN </label>
+                                        <div class="col-lg-12">
+                                            <div class="form-content" ckeditor="data.options" ng-model="FormModel.EDITOR_TABLE_EN"></div>
+                                            @*<text-angular name="EDITOR_TABLE_EN" class="form-content" ng-model="FormModel.EDITOR_TABLE_EN"></text-angular>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-20">
+                                    <div class="form-group row">
+                                        <label class="col-lg-12 control-label" for="ProductSort">Açıklama DE </label>
+                                        <div class="col-lg-12">
+                                            <div class="form-content" ckeditor="data.options" ng-model="FormModel.EDITOR_TABLE_GR"></div>
+                                            @*<text-angular name="EDITOR_TABLE_DE" class="form-content" ng-model="FormModel.EDITOR_TABLE_GR"></text-angular>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-20">
+                                    <div class="form-group row">
+                                        <label class="col-lg-12 control-label" for="ProductSort">Açıklama FR </label>
+                                        <div class="col-lg-12">
+                                            <div class="form-content" ckeditor="data.options" ng-model="FormModel.EDITOR_TABLE_FR"></div>
+                                            @*<text-angular name="EDITOR_TABLE_FR" class="form-content" ng-model="FormModel.EDITOR_TABLE_FR"></text-angular>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div ng-class="getTabPaneClass(3)" id="productpic">
+                            <div class="card-body text-danger" ng-show="FormModel.PRODID == null" style="padding-top:0px">
+                                Resim tanımlayabilmek için ürün kaydı oluşturmalısınız!
+                            </div>
+                            <div class="card-body" ng-show="FormModel.PRODID != null" style="padding-top:0px">
+                                <!--Resim List-->
+                                <div class="row yesil-title">
+                                    <div class="col-8 d-flex align-items-center">
+                                        <h1 class="card-title">Resim Listesi</h1>
+                                    </div>
+                                    <div class="col-4 d-flex align-items-center justify-content-end">
+                                        <a href="javascript:void(0);" class="btn btn-primary pull-right" ng-click="NewProductImage(1)"><i class='fas fa-plus text-white'></i>EKLE</a>
+                                    </div>
+                                </div>
+                                <scrollable-table watch="ProductImageList">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                @*<th>ID</th>*@
+                                                <th>Resim</th>
+                                                <th>Dosya Adı</th>
+                                                <th>Kısa Açıklama</th>
+                                                <th>Ekleyen</th>
+                                                <th>Tarih</th>
+                                                <th>Güncelle</th>
+                                                <th>Sil</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-show="ProductImageList.length == 0">
+                                                <td colspan="7">Boş liste.</td>
+                                            </tr>
+                                            <tr ng-repeat="item in ProductImageList | orderBy: 'RankNumber'">
+                                                @*<td ng-bind="item.ID"></td>*@
+                                                <td><img ng-src="{{item.FilePath}}?@DateTime.Now.Ticks" style="width:100px" /></td>
+                                                <td ng-bind="item.FileName.substring(item.FileName.lastIndexOf('/') + 1)"></td>
+                                                <td ng-bind="item.Title"></td>
+                                                <td ng-bind="item.CreatedBy"></td>
+                                                <td ng-bind="item.CreatedOn | date:'dd.MM.yyyy HH:mm'"></td>
+                                                <td><a href="javascript:void(0);" class="duzenle-btn-round" ng-click="EditProductImage(1, item.ID)"><i class='fas fa-pencil-alt text-white'></i></a></td>
+                                                <td><a href="javascript:void(0);" class="sil-btn-round" ng-click="ShowDeleteImagePopup(1, item.ID)"><i class='fas fa-trash-alt  text-white'></i></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </scrollable-table>
+
+                                <!--Teknik Resim List-->
+                                <div class="row yesil-title" style="margin-top:30px">
+                                    <div class="col-8 d-flex align-items-center">
+                                        <h1 class="card-title">Teknik Resim Listesi</h1>
+                                    </div>
+                                    <div class="col-4 d-flex align-items-center justify-content-end">
+                                        <a href="javascript:void(0);" class="btn btn-primary pull-right" ng-click="NewProductImage(2)"><i class='fas fa-plus text-white'></i>EKLE</a>
+                                    </div>
+                                </div>
+                                <scrollable-table watch="ProductTImageList">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                @*<th>ID</th>*@
+                                                <th>Resim</th>
+                                                <th>Dosya Adı</th>
+                                                <th>Kısa Açıklama</th>
+                                                <th>Ekleyen</th>
+                                                <th>Tarih</th>
+                                                <th>Güncelle</th>
+                                                <th>Sil</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-show="ProductTImageList.length == 0">
+                                                <td colspan="7">Boş liste.</td>
+                                            </tr>
+                                            <tr ng-repeat="item in ProductTImageList | orderBy: 'RankNumber'">
+                                                @*<td ng-bind="item.ID"></td>*@
+                                                <td><img ng-src="{{item.FilePath}}?@DateTime.Now.Ticks" style="width:100px" /></td>
+                                                <td ng-bind="item.FileName.substring(item.FileName.lastIndexOf('/') + 1)"></td>
+                                                <td ng-bind="item.Title"></td>
+                                                <td ng-bind="item.CreatedBy"></td>
+                                                <td ng-bind="item.CreatedOn | date:'dd.MM.yyyy HH:mm'"></td>
+                                                <td><a href="javascript:void(0);" class="duzenle-btn-round" ng-click="EditProductImage(2, item.ID)"><i class='fas fa-pencil-alt text-white'></i></a></td>
+                                                <td><a href="javascript:void(0);" class="sil-btn-round" ng-click="ShowDeleteImagePopup(2, item.ID)"><i class='fas fa-trash-alt  text-white'></i></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </scrollable-table>
+                            </div>
+                        </div>
+
+                            <div ng-class="getTabPaneClass(4)" id="productother">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label" for="ProductCategoryGroup">Kategori Grup </label>
+                                                <div class="col-lg-12">
+                                                    <input type="text" class="form-control" id="ProductCategoryGroup" name="ProductCategoryGroup" ng-model="FormModel.CATGROUP" autocomplete="off" maxlength="100" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-sm-12 col-form-label">DESCC</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" ng-model="FormModel.DESCC">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-sm-12 col-form-label">Ürün Ağırlık</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" ng-model="FormModel.DESI">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-sm-12 col-form-label">MARKA</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" ng-model="FormModel.MARKA">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">SIRA </label>
+                                                <div class="col-lg-12">
+                                                    <input type="number" class="form-control" ng-model="FormModel.SIRALAMA" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">Satışa Açık </label>
+                                                <div class="col-lg-12">
+                                                    <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="FormModel.OpenForSale" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">Paket Adedi</label>
+                                                <div class="col-lg-12">
+                                                    <input type="number" class="form-control" ng-model="FormModel.PackagePieceCount" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">Koli Ölçüleri</label>
+                                                <div class="col-lg-12">
+                                                    <input type="text" class="form-control" ng-model="FormModel.PackageDimensions" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">Paletteki Ürün Adedi</label>
+                                                <div class="col-lg-12">
+                                                    <input type="number" class="form-control" ng-model="FormModel.CountInPalette" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">Euro Palet </label>
+                                                <div class="col-lg-12">
+                                                    <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="FormModel.IsEuroPalette" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">Yönetici Özel Notu </label>
+                                                <div class="col-lg-12">
+                                                    <div class="form-content" ckeditor="data.options" ng-model="FormModel.EDITOR_ManagerNote"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-class="getTabPaneClass(5)" id="barcode">
+                                <div class="card-body" style="padding-top:0px">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-20">
+                                            <!--Etiket Barkod-->
+                                            <div class="row yesil-title">
+                                                <div class="col-8 d-flex align-items-center">
+                                                    <h1 class="card-title">Etiket Barkod</h1>
+                                                </div>
+
+                                                @*<div class="col-4 d-flex align-items-center justify-content-end">
+                                <a href="javascript:void(0);" class="btn btn-primary pull-right" ng-click="NewProductImage(1)"><i class='fas fa-plus text-white'></i>EKLE</a>
+                            </div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-class="getTabPaneClass(6)" id="b2b">
+                                <div class="card-body" style="padding-top:0px">
+
+                                    <div class="row">
+                                        <div class="col-md-3 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 col-form-label">Baz Fiyat</label>
+                                                <div class="col-lg-12">
+                                                    <input type="number" yr-integer id="B2BBasePrice" name="B2BBasePrice" ng-model="FormModel.B2BBasePrice" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 col-form-label">P.B.</label>
+                                                <div class="col-lg-12">
+                                                    <select class="form-control" id="CURRENCY" name="CURRENCY" ng-class="{'text-danger': (DetailForm.CURRENCY.$dirty || DetailForm.$submitted) && DetailForm.CURRENCY.$invalid }"
+                                                            ng-model="FormModel.B2BCurrencyID" @*ng-change="CurrencyChanged(muitem.MPID, muitem.CURRENCY)"*@
+                                                            ng-options="critem.ID as critem.Code for critem in Currencies" ng-required="FormModel.B2BBasePrice!=null && FormModel.B2BBasePrice!=undefined">
+                                                        <option value="">--Seçiniz--</option>
+                                                    </select>
+                                                    <span style="width:100%;" ng-show="(DetailForm.CURRENCY.$dirty || DetailForm.$submitted) && DetailForm.CURRENCY.$invalid">
+                                                        <label class="text-danger" ng-show="DetailForm.CURRENCY.$error.required">Zorunlu Alan</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 col-form-label">İndirimli Fiyatı</label>
+                                                <div class="col-lg-12">
+                                                    <input type="number" yr-integer ng-model="FormModel.B2BDiscountedPrice" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 col-form-label">Stok Adet</label>
+                                                <div class="col-lg-12">
+                                                    <input type="number" yr-integer id="B2BStockAmount" name="B2BStockAmount" ng-model="FormModel.B2BStockAmount" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-20">
+                                            <!--B2B-->
+                                            <div class="row yesil-title">
+                                                <div class="col-8 d-flex align-items-center">
+                                                    <h1 class="card-title">B2B Bayi Fiyat Oranları</h1>
+                                                </div>
+                                                @*<div class="col-4 d-flex align-items-center justify-content-end">
+                                <a href="javascript:void(0);" class="btn btn-primary pull-right" ng-click="NewProductImage(1)"><i class='fas fa-plus text-white'></i>EKLE</a>
+                            </div>*@
+                                            </div>
+
+
+                                            <table class="table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:150px">Bayi Tipi</th>
+                                                        <th style="width:80px">Kar %</th>
+                                                        <th style="width:150px">Bayi Fiyatı</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-show="B2BPriceList.length == 0">
+                                                        <td colspan="7">Boş liste.</td>
+                                                    </tr>
+                                                    <tr ng-repeat="item in B2BPriceList | orderBy: 'DealerPricingType'">
+                                                        <td ng-bind="item.Name"></td>
+                                                        <td class="text-right" ng-bind="item.SalesRate"></td>
+                                                        <td class="text-right" ng-bind="FormModel.B2BBasePrice != null && item.SalesRate != null ? (FormModel.B2BBasePrice * (1 + (item.SalesRate / 100))) : null | number: 2 "></td>
+                                                        @*<td><a href="javascript:void(0);" class="duzenle-btn-round" ng-click="EditProductImage(1, item.ID)"><i class='fas fa-pencil-alt text-white'></i></a></td>
+                                    <td><a href="javascript:void(0);" class="sil-btn-round" ng-click="ShowDeleteImagePopup(1, item.ID)"><i class='fas fa-trash-alt  text-white'></i></a></td>*@
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                        <div class="col-md-6 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">B2B'de görünsün</label>
+                                                <div class="col-lg-12">
+                                                    <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="FormModel.B2BIsVisible" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">Anasayfa'da görünsün</label>
+                                                <div class="col-lg-12">
+                                                    <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="FormModel.B2BIsVisibleOnHomepage" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">Kategori Anasayfasında görünsün</label>
+                                                <div class="col-lg-12">
+                                                    <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="FormModel.B2BIsVisibleOnCategoryHomepage" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">Yeni Ürün</label>
+                                                <div class="col-lg-12">
+                                                    <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="FormModel.B2BIsNewProduct" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">İndirimde</label>
+                                                <div class="col-lg-12">
+                                                    <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="FormModel.B2BIsOnSale" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 mb-20">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">B2B Açıklama </label>
+                                                <div class="col-lg-12">
+                                                    <div class="form-content" ckeditor="data.options" ng-model="FormModel.EDITOR_B2B"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div ng-class="getTabPaneClass(7)" id="relateds">
+                                <div class="card-body" style="padding-top:0px">
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-20">
+                                            <!--İlgili Ürünler-->
+                                            <div class="row yesil-title">
+                                                <div class="col-8 d-flex align-items-center">
+                                                    <h1 class="card-title">İlgili Ürünler</h1>
+                                                </div>
+                                                <div class="col-4 d-flex align-items-center justify-content-end">
+                                                    <a href="javascript:void(0);" class="btn btn-primary pull-right" ng-click="AddBrowsedProduct('related')"><i class='fas fa-plus text-white'></i>EKLE</a>
+                                                </div>
+                                            </div>
+
+                                            <table class="table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:150px">Sıra No</th>
+                                                        <th style="width:150px">BU Numarası</th>
+                                                        <th style="width:80px">Ürün Adı</th>
+                                                        <th style="width:50px">Adet</th>
+                                                        @*<th style="width:80px">Düzenle</th>*@
+                                                        <th style="width:80px">Sil</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-show="RelatedProducts.length == 0">
+                                                        <td colspan="6">Boş liste.</td>
+                                                    </tr>
+                                                    <tr ng-repeat="item in RelatedProducts | orderBy: 'RankNumber'">
+                                                        <td><input type="number" ng-model="item.RankNumber" /></td>
+                                                        <td ng-bind="item.RelatedBUKod"></td>
+                                                        <td ng-bind="item.RelatedProductName"></td>
+                                                        <td><input type="number" ng-model="item.Quantity" /></td>
+                                                        @*<td><a href="javascript:void(0);" class="duzenle-btn-round" ng-click="EditProductImage(1, item.ID)"><i class='fas fa-pencil-alt text-white'></i></a></td>*@
+                                                        <td><a href="javascript:void(0);" class="sil-btn-round" ng-click="DeleteRelatedProduct(item.ID)"><i class='fas fa-trash-alt  text-white'></i></a></td>
+
+                                                        @*<td class="text-right" ng-bind="item.RankNumber"></td>
+                                    <td ng-bind="item.RelatedBUKod"></td>
+                                    <td ng-bind="item.RelatedProductName"></td>
+                                    <td ng-bind="item.Quantity"></td>
+                                    <td><a href="javascript:void(0);" class="duzenle-btn-round" ng-click="EditProductImage(1, item.ID)"><i class='fas fa-pencil-alt text-white'></i></a></td>
+                                    <td><a href="javascript:void(0);" class="sil-btn-round" ng-click="ShowDeleteImagePopup(1, item.ID)"><i class='fas fa-trash-alt  text-white'></i></a></td>*@
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div ng-class="getTabPaneClass(8)" id="bundled" ng-show="FormModel.IsBundled==true">
+                                <div class="card-body" style="padding-top:0px">
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-20">
+                                            <!--Bundle Ürünler-->
+                                            <div class="row yesil-title">
+                                                <div class="col-8 d-flex align-items-center">
+                                                    <h1 class="card-title">Paket Ürün Detayları</h1>
+                                                </div>
+                                                <div class="col-4 d-flex align-items-center justify-content-end">
+                                                    <a href="javascript:void(0);" class="btn btn-primary pull-right" ng-click="AddBrowsedProduct('bundled')"><i class='fas fa-plus text-white'></i>EKLE</a>
+                                                </div>
+                                            </div>
+
+                                            <table class="table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:150px">Sıra No</th>
+                                                        <th style="width:150px">BU Numarası</th>
+                                                        <th style="width:80px">Ürün Adı</th>
+                                                        <th style="width:50px">Adet</th>
+                                                        @*<th style="width:80px">Düzenle</th>*@
+                                                        <th style="width:80px">Sil</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-show="BundledProducts.length == 0">
+                                                        <td colspan="6">Boş liste.</td>
+                                                    </tr>
+                                                    <tr ng-repeat="item in BundledProducts | orderBy: 'RankNumber'">
+                                                        <td><input type="number" ng-model="item.RankNumber" /></td>
+                                                        <td ng-bind="item.BundledBUKod"></td>
+                                                        <td ng-bind="item.BundledProductName"></td>
+                                                        <td><input type="number" ng-model="item.Quantity" /></td>
+                                                        @*<td><a href="javascript:void(0);" class="duzenle-btn-round" ng-click="EditProductImage(1, item.ID)"><i class='fas fa-pencil-alt text-white'></i></a></td>*@
+                                                        <td><a href="javascript:void(0);" class="sil-btn-round" ng-click="DeleteBundledProduct(item.ID)"><i class='fas fa-trash-alt  text-white'></i></a></td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                </div>
+            </div>
+        </section>
+    </form>
+</div>

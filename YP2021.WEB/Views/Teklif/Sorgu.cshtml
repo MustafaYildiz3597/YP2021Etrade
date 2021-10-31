@@ -1,0 +1,104 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="~/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />*@
+<link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">*@
+@*<link rel="stylesheet" href="~/vendor/datatables/media/css/dataTables.bootstrap4.css" />*@
+
+@*<link href="https://l-lin.github.io/angular-datatables/archives/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://l-lin.github.io/angular-datatables/archives/dist/plugins/bootstrap/datatables.bootstrap.min.css" rel="stylesheet" />*@
+
+<style>
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+    }
+
+    html .card-primary .card-title {
+        min-height: 47px;
+    }
+
+    button.dt-button, div.dt-button, a.dt-button {
+        padding: 8px;
+    }
+
+    .dt-button.buttons-excel.buttons-html5 {
+        margin-left: 10px;
+    }
+</style>
+
+
+<section role="main" class="content-body" ng-init="Init('@ViewBag.FirmID')">
+    <header class="page-header">
+        <h2>Teklif Yönetimi</h2>
+
+        <div class="right-wrapper text-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li><span>Teklif Sorgulama</span> </li>
+            </ol>
+
+            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>
+        </div>
+    </header>
+
+    @*@{ Html.RenderPartialIf("_MenuBar", Request.IsAuthenticated); }*@
+
+    <!-- start: page -->
+    <div class="row" ng-show="ShowingDiv=='Liste'">
+        @*|| ShowingDiv=='detail'*@
+        <div class="col">
+            <section class="card card-primary">
+                <header class="card-header">
+                    <!-- <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                    </div> -->
+                    <h2 class="card-title"><i class="fal fa-list"></i> Teklif Sorgu</h2>
+                </header>
+                <div class="card-body">
+                    @*<div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <button id="addToTable" class="btn btn-primary" ng-click="AddItem()">Ekle <i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>*@
+                    @*<div class="row">
+                            <div class="col-sm-12">
+                                <button id="addToTable" class="btn btn-primary pull-right" ng-click="AddItem()"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>*@
+                    <table id="entry-grid" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" class="table table-bordered table-striped mb-0" @*class="table table-hover nowrap" *@></table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- end: page -->
+</section>
+
+@section Scripts {
+    <script src="~/js/angularjs/teklifsorgu.js?@DateTime.Now.Ticks"></script>
+    <script src="~/js/examples/examples.datatables.default.js"></script>
+    <script src="~/js/mask.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    @*
+        <script src="https://l-lin.github.io/angular-datatables/archives/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="https://l-lin.github.io/angular-datatables/archives/vendor/angular-bootstrap/ui-bootstrap.min.js"></script>
+
+        <script src="https://l-lin.github.io/angular-datatables/archives/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js"></script>*@
+
+
+    @*
+        <script src="~/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>*@
+    @*
+        <script src="~/js/bootstrap-datepicker.tr.js"></script>*@
+
+}

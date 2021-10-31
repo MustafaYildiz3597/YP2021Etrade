@@ -1,0 +1,179 @@
+﻿<!-- Modal Form -->
+<div id="modalTProductEditForm" class="modal-block modal-block-primary mfp-hide">
+    <section class="card">
+        <header class="card-header bg-primary">
+            <div class="row">
+                <div class="col-10">
+                    <h2 class="card-title text-white" ng-bind="'Tedarikçi Ürün: ' + TuTitle"></h2>
+                </div>
+                <div class="col-2 text-right">
+                    <button class="btn kapat-btn pull-right" ng-click="ClosePopup()"><i class="fas fa-times text-white"></i></button>
+                </div>
+            </div>
+        </header>
+
+        <!-- TProduct Edit -->
+        <div class="card-body" @*ng-show="TUPopup=='TUformview'"*@>
+            <form class="form-horizontal" name="DetailForm" id="DetailForm" novalidate ng-submit="Save(DetailForm.$valid)">
+                <div class="row">
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">BUKOD</label>
+                            <div class="col-11">
+                                <input type="text" class="form-control" id="BUKOD" name="BUKOD" ng-model="FormModel.BUKOD" autocomplete="off" maxlength="50" />
+                            </div>
+                            <div class="col-1" style="padding:0">
+                                <label><input class="btn ucNokta" type="button" value="..." ng-click="BrowseBUKOD('e')" /></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Müş.Ürün No</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" ng-model="FormModel.XPSNO">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Ürün Adı</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.ProductName">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">AÇIKLAMA</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" ng-model="FormModel.EDITOR_TABLE">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20" ng-show="FormModel.TPID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Firma</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.MusteriName">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20" ng-show="FormModel.TPID == null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Firma</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" name="MusteriID" ng-model="FormModel.MusteriID" @*ng-change="cmbMusteriIDChanged()"*@
+                                        ng-class="{'text-danger': (DetailForm.MusteriID.$dirty || DetailForm.$submitted) && DetailForm.MusteriID.$invalid }"
+                                        ng-options="item.ID as item.FIRMA_ADI for item in Tedarikciler | orderBy: 'FIRMA_ADI'" required>
+                                    <option value="">---Seçiniz---</option>
+                                </select>
+                                <span style="width:100%;" ng-show="(DetailForm.MusteriID.$dirty || DetailForm.$submitted) && DetailForm.MusteriID.$invalid">
+                                    <label class="error" ng-show="DetailForm.MusteriID.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Ted.Ürün Adı</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" ng-model="FormModel.NAME">
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Müş.Ürün Adı DE</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" ng-model="FormModel.NAME_DE">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Müş.Ürün Adı EN</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" ng-model="FormModel.NAME_EN">
+                            </div>
+                        </div>
+                    </div>*@
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">OEM</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" ng-model="FormModel.OEM">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">PRICE</label>
+                            <div class="col-8">
+                                <input type="number" yr-integer id="PRICE" name="PRICE" class="form-control" ng-model="FormModel.PRICE" required>
+                                <span style="width:100%;" ng-show="(DetailForm.PRICE.$dirty || DetailForm.$submitted) && DetailForm.PRICE.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.PRICE.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                            <div class="col-4">
+                                <select class="form-control" id="CURRENCY" name="CURRENCY" ng-class="{'text-danger': (DetailForm.CURRENCY.$dirty || DetailForm.$submitted) && DetailForm.CURRENCY.$invalid }"
+                                        ng-model="FormModel.CURRENCY" @*ng-change="CurrencyChanged(tuitem.TPID, tuitem.CURRENCY)"*@
+                                        ng-options="critem.ID as critem.Code for critem in Currencies" required>
+                                    <option value="">--Seçiniz--</option>
+                                </select>
+                                <span style="width:100%;" ng-show="(DetailForm.CURRENCY.$dirty || DetailForm.$submitted) && DetailForm.CURRENCY.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.CURRENCY.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-20" ng-show="FormModel.TPID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Ekleyen</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.CreatedBy">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="FormModel.TPID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">E.Tarih</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.CreatedOn">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="FormModel.TPID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Güncelleyen</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.UpdatedBy">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="FormModel.TPID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">G.Tarih</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.UPDATED">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="card-footer">
+                    <div class="row justify-content-end">
+                        <input type="submit" class="btn pink-btn" value="Kaydet" />
+                    </div>
+                </footer>
+
+            </form>
+
+        </div>
+
+    </section>
+</div>
+
+
+

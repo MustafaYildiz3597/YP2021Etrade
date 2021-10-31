@@ -1,0 +1,341 @@
+﻿<!-- Modal Form -->
+<div id="modalCariAddressForm" class="modal-block modal-block-primary mfp-hide">
+    <section class="card">
+        <header class="card-header bg-primary">
+            <div class="row">
+                <div class="col-10 d-flex align-items-center">
+                    <h2 class="card-title">{{CariAddressPopupTitle}}</h2>
+                </div>
+                <div class="col-2  d-flex align-items-center justify-content-end">
+                    <button class="btn kapat-btn pull-right" ng-click="CloseAddressPopup()"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Cari Address Form List -->
+        <div class="card-body" ng-show="AddressPopup=='addresslist'">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-center alt-title mb-20">
+                    <h1>Adresler</h1>
+                </div>
+                <div class="col-md-4 d-flex align-items-center mb-20"><input type="text" class="form-control form-control-sm  pull-right " ng-model="cariaddressfiltertext" maxlength="20" placeholder="Tabloda Ara"></div>
+                <div class="col-md-2 d-flex align-items-center justify-content-end mb-20">
+                    <button id="addToTable" class="btn pink-btn pull-right" ng-click="AddCariAddress()"><i class="fas fa-plus text-white"></i> EKLE</button>
+                </div>
+            </div>
+            <scrollable-table watch="CariAddressList" resizable>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            @*<th>ID</th>*@
+                            <th>Adres Tipi</th>
+                            <th>Ülke</th>
+                            <th>Şehir</th>
+                            <th>Posta Kodu</th>
+                            <th>E.Tarih</th>
+                            <th>Ekleyen</th>
+                            <th>G.Tarih</th>
+                            <th>Güncelleyen</th>
+                            <th>Görüntüle</th>
+                            <th>Düzenle</th>
+                            <th>Sil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*<tr ng-show="CariAddressList.length == 0">
+                            <td colspan="8">Boş liste.</td>
+                        </tr>*@
+                        <tr ng-repeat="item in CariAddressList | orderBy: 'FullName' | filter: cariaddressfiltertext">
+                            @*<td ng-bind="item.ID"></td>*@
+                            <td ng-bind="item.AdresTipi"></td>
+                            <td ng-bind="item.UlkeAd"></td>
+                            <td ng-bind="item.SehirAd"></td>
+                            <td ng-bind="item.POSTA_KODU"></td>
+                            <td ng-bind="item.CreatedBy"></td>
+                            <td ng-bind="item.CreatedOn | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="item.UpdatedBy"></td>
+                            <td ng-bind="item.UpdatedOn | date:'yyyy-MM-dd'"></td>
+                            <td><a href="javascript:void(0);" class="goruntule-btn-round" ng-click="ViewCariAddress(item.ID)"><i class="fas fa-eye text-white"></i></a></td>
+                            <td><a href="javascript:void(0);" class="duzenle-btn-round" ng-click="EditCariAddress(item.ID)" /><i class="fas fa-pencil-alt text-white"></i></a></td>
+                            <td><a href="javascript:void(0);" class="sil-btn-round" ng-click="ShowDeleteCariAddressPopup(item.ID)" /><i class="fas fa-trash-alt  text-white"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </scrollable-table>
+        </div>
+
+        <!-- Cari Address Form View -->
+        <div class="card-body p0" ng-show="AddressPopup=='formview'">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn geri-btn" type="button" ng-click="BackToAddressList()"><i class="fas fa-reply text-white"></i></button>
+                        <h2 ng-bind-html="'Adres: ' + AddressHeaderText"></h2>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+                <div class="row">
+                    @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">ID</label>
+                <div class="col-sm-12">
+                    <input type="text" readonly class="form-control" ng-model="AddressFormData.ID">
+                </div>
+            </div>
+        </div>*@
+                    <div class="col-md-12 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Adres</label>
+                            <div class="col-sm-12">
+                                <span class="form-control" ng-bind-html="AddressFormData.ADRES"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Adres Tipi</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="AddressFormData.AdresTipi">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Ulke</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="AddressFormData.UlkeAd">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Şehir</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="AddressFormData.SehirAd">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">POSTA_KODU</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="AddressFormData.POSTA_KODU">
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">TARİH</label>
+                <div class="col-sm-12">
+                    <span class="form-control" ng-bind="AddressFormData.TARIH | date : 'dd.MM.yyyy HH:mm:ss'"></span>
+                </div>
+            </div>
+        </div>*@
+                    <div class="col-md-3 mb-20" ng-show="AddressFormData.ID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">E.TARİH</label>
+                            <div class="col-sm-12">
+                                <span class="form-control" ng-bind="AddressFormData.CreatedOn | date : 'yyyy-MM-dd HH:mm:ss'"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="AddressFormData.ID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">EKLEYEN</label>
+                            <div class="col-sm-12">
+                                <span class="form-control" ng-bind="AddressFormData.CreatedBy"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="AddressFormData.ID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">G.TARİH</label>
+                            <div class="col-sm-12">
+                                <span class="form-control" ng-bind="AddressFormData.UpdatedOn | date : 'yyyy-MM-dd HH:mm:ss'"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="AddressFormData.ID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">GÜNCELLEYEN</label>
+                            <div class="col-sm-12">
+                                <span class="form-control" ng-bind="AddressFormData.UpdatedBy"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <footer class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <button class="btn pink-btn" ng-click="EditCariAddress(AddressFormData.ID)">Düzenle</button>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Cari Address Form Edit -->
+        <div class="card-body p0" ng-show="AddressPopup=='formedit'">
+            <form class="form-horizontal" name="AddressForm" id="AddressForm" novalidate ng-submit="SaveCariAddress(AddressForm.$valid)">
+                <header class="card-header alt-title">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn geri-btn" type="button" ng-click="BackToAddressList()"><i class="fas fa-reply text-white"></i></button>
+                            <h2 ng-bind-html="'Adres: ' + AddressHeaderText"></h2>
+                        </div>
+                    </div>
+                </header>
+                <div class="card-body">
+                    <div class="row">
+                        @*<div class="col-md-12 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">ID</label>
+                <div class="col-sm-12">
+                    <input type="text" readonly class="form-control" ng-model="AddressFormData.ID">
+                </div>
+            </div>
+        </div>*@
+                        <div class="col-md-12 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label" for="Adres">Adres</label>
+                                <div class="col-sm-12">
+                                    <text-angular name="AdresText" class="form-content" ng-model="AddressFormData.ADRES" ng-class="{'error': (AddressForm.AdresText.$dirty || AddressForm.$submitted) && AddressForm.AdresText.$invalid}" required></text-angular>
+                                    <span style="width:100%;" ng-show="(AddressForm.AdresText.$dirty || AddressForm.$submitted) && AddressForm.AdresText.$invalid">
+                                        <label class="error" ng-show="AddressForm.AdresText.$error.required">Zorunlu Alan</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label" for="AdresTipi">Adres Tipi</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" ng-class="{'error': (AddressForm.AdresTipi.$dirty || AddressForm.$submitted) && AddressForm.AdresTipi.$invalid}"
+                                            name="AdresTipi" ng-model="AddressFormData.TIP"
+                                            ng-options="item.ID as item.Name for item in AdresTipleri" required>
+                                        <option value="">--Seçiniz--</option>
+                                    </select>
+                                    <span style="width:100%;" ng-show="(AddressForm.AdresTipi.$dirty || AddressForm.$submitted) && AddressForm.AdresTipi.$invalid">
+                                        <label class="error" ng-show="AddressForm.AdresTipi.$error.required">Zorunlu Alan</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label" for="Ulke">Ulke</label>
+                                <div class="col-sm-12">
+                                    @*<input type="text" readonly class="form-control-plaintext" ng-model="AddressFormData.UlkeAd">*@
+                                    <select class="form-control" @*ng-class="{'error': (AddressForm.Ulke.$dirty || AddressForm.$submitted) && AddressForm.Ulke.$invalid}"*@
+                                            name="Ulke" ng-model="AddressFormData.Ulke"
+                                            ng-options="item.UID as item.UNAME for item in Ulkeler" @*required*@>
+                                        <option value="">--Seçiniz--</option>
+                                    </select>
+                                    @*<span style="width:100%;" ng-show="(AddressForm.Ulke.$dirty || AddressForm.$submitted) && AddressForm.Ulke.$invalid">
+                        <label class="error" ng-show="AddressForm.Ulke.$error.required">Zorunlu Alan</label>
+                    </span>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label" for="Sehir">Şehir</label>
+                                <div class="col-sm-12">
+                                    @*<input type="text" readonly class="form-control-plaintext" ng-model="AddressFormData.SehirAd">*@
+                                    @*<input type="text" readonly class="form-control-plaintext" ng-model="AddressFormData.UlkeAd">*@
+                                    <select class="form-control" @*ng-class="{'error': (AddressForm.Ulke.$dirty || AddressForm.$submitted) && AddressForm.Ulke.$invalid}"*@
+                                            name="Ulke" ng-model="AddressFormData.Sehir"
+                                            ng-options="item.ID as item.NAME for item in Sehirler | filter: criFilterUlkeler() | orderBy: 'NAME'" @*required*@>
+                                        <option value="">--Seçiniz--</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label">POSTA_KODU</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" ng-model="AddressFormData.POSTA_KODU" />
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">TARİH</label>
+                <div class="col-sm-12">
+                    <span class="form-control" ng-bind="AddressFormData.TARIH | date : 'dd.MM.yyyy HH:mm:ss'"></span>
+                </div>
+            </div>
+        </div>*@
+                        <div class="col-md-3 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label">E.TARİH</label>
+                                <div class="col-sm-12">
+                                    <span class="form-control" ng-bind="AddressFormData.CreatedOn | date : 'yyyy-MM-dd HH:mm:ss'"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label">EKLEYEN</label>
+                                <div class="col-sm-12">
+                                    <span class="form-control" ng-bind="AddressFormData.CreatedBy"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label">G.TARİH</label>
+                                <div class="col-sm-12">
+                                    <span class="form-control" ng-bind="AddressFormData.UpdatedOn | date : 'yyyy-MM-dd HH:mm:ss'"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label">GÜNCELLEYEN</label>
+                                <div class="col-sm-12">
+                                    <span class="form-control" ng-bind="AddressFormData.UpdatedBy"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <input type="submit" class="btn pink-btn" value="Kaydet" />
+                    </div>
+                </footer>
+            </form>
+        </div>
+
+        <!-- Cari Adress Form Delete -->
+        <div class="card-body p0" ng-show="AddressPopup=='formdelete'">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn geri-btn" type="button" ng-click="BackToAddressList()"><i class="fas fa-reply text-white"></i></button>
+                        <h2 ng-bind-html="'Adres: ' + AddressHeaderText"></h2>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+                @*"{{OEMHeaderText}}"*@ Adres silinecektir. Devam etmek için Sil butonuna basarak devam edebilirsiniz.
+            </div>
+            <footer class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <input type="button" class="btn btn-danger mr-10" value="Sil" ng-click="DeleteCariAddress()" />
+                    <button class="btn btn-default" ng-click="BackToProductOEMList()">Vazgeç</button>
+                </div>
+            </footer>
+
+        </div>
+
+
+
+    </section>
+</div>
+
+
+

@@ -1,0 +1,101 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+<html>
+<head>
+    <title>Asp.Net Core ile Web Sockets Kullanımı</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+</head>
+<body>
+    <button id="btnConnect" type="submit">Connect</button><br />
+    Message : <input id="lblMessage" style="width:300px;" /><br />
+    <button id="btnSendMessage" type="submit">Send Message</button><br />
+    <button id="btnDisconnect" type="submit">Disconnect</button><br />
+    <script>
+    var btnConnect = document.getElementById("btnConnect");
+    var btnSendMessage=document.getElementById("btnSendMessage");
+    var lblMessage=document.getElementById("lblMessage");
+    var btnDisconnect=document.getElementById("btnDisconnect");
+    var socket;
+
+        btnConnect.onclick = function () {
+
+            var formData = { pin : "2403" };
+
+            var settings = {
+                "url": "http://localhost:8000/checkpin",
+                "method": "POST",
+                "timeout": 0,
+                "dataType": "jsonp",
+                "headers": {
+                    "Content-Type": "text/plain"
+                },
+                "data": formData
+            };
+
+            //$.ajax(settings).done(function (response) {
+            //    console.log(response);
+            //});
+
+            $.post("http://localhost:8000/checkpin",
+                formData,
+                function (data, textStatus, jqXHR) {
+                    console.log(data);
+                });
+
+            //var formData = { name: "ravi", age: "31" }; //Array 
+
+            //$.ajax({
+            //    url: "AJAX_POST_URL",
+            //    type: "POST",
+            //    data: formData,
+            //    success: function (data, textStatus, jqXHR) {
+            //        //data - response from server
+            //    },
+            //    error: function (jqXHR, textStatus, errorThrown) {
+
+            //    }
+            //});
+
+            return;
+
+            socket = new WebSocket("ws://localhost:5556/nokya");
+            socket.onopen = function (e) {
+                console.log("Connected",e);
+            };
+            socket.onclose = function (e) {
+                console.log("Disconnected",e);
+            };
+            socket.onerror = function(e){
+                console.error(e.data);
+            };
+            socket.onmessage = function (e) {
+                console.log(e.data);
+            };
+        }
+
+    btnSendMessage.onclick = function () {
+            if (!socket || socket.readyState != WebSocket.OPEN) {
+                console.error("Houston we have a problem! Socket not connected.");
+            }
+            var data = lblMessage.value;
+            socket.send(data);
+            console.log(data);
+        }
+
+    btnDisconnect.onclick = function () {
+            if (!socket || socket.readyState != WebSocket.OPEN) {
+                console.error("Houston we have a problem! Socket not connected.");
+            }
+            socket.close(1000, "Closing from Apollo 13");
+        }
+
+
+
+
+    </script>
+</body>
+</html>

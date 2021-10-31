@@ -1,0 +1,55 @@
+﻿<!-- Modal Form -->
+<div id="modalImportPopup" class="modal-block modal-block-primary mfp-hide" style="max-width: 1200px;">
+    <section class="card">
+        <header class="card-header bg-primary text-white">
+            <div class="row">
+                <div class="col-md-11">
+                    <h2 class="card-title text-white" ng-bind="'Tedarikçi Ürün Yükleme (Excel) ' + MUPopupTitle"></h2>
+                </div>
+                <div class="col-md-1 float-right">
+                    <button type="button" class="close text-white" ng-click="ClosePopup()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="card-body">
+
+            <form class="form-horizontal" name="UploadExcelForm" id="UploadExcelForm" novalidate ng-submit="UploadSelectedRows(UploadExcelForm.$valid)">
+                <div class="form-group row">
+                    <label class="col-lg-3 control-label text-lg-right pt-2" for="cmbMusteri">Tedarikçi</label>
+                    <div class="col-lg-6">
+                        <ui-select id="cmbMusteri" name="cmbMusteri" ng-model="UploadExcelFormModel.selectedTedarikci" theme="select2" ng-disabled="ctrl.disabled" sortable="true"
+                                   close-on-select="true" style="width: 400px;" ng-required="true">
+                            <ui-select-match placeholder="Tedarikçi Seç..." allow-clear="true">{{UploadExcelFormModel.selectedTedarikci.FIRMA_ADI}}</ui-select-match>
+                            <ui-select-choices repeat="person in Tedarikciler | propsFilter: {ID: $select.search, FIRMA_ADI: $select.search}">
+                                <div ng-bind-html="person.FIRMA_ADI | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+
+                        <span style="width:100%;" ng-show="(UploadExcelForm.cmbMusteri.$dirty || UploadExcelForm.$submitted) && UploadExcelForm.cmbMusteri.$invalid">
+                            <label class="text-danger" ng-show="UploadExcelForm.cmbMusteri.$error.required">Zorunlu Alan</label>
+                        </span>
+                    </div>
+                </div>
+
+
+
+                <footer class="card-footer">
+                    <div class="row justify-content-end">
+                        <div class="col-sm-6">
+                            @*<button class="btn btn-primary">Submit</button>*@
+                            <input type="submit" class="btn btn-primary" value="Yükle" ng-click="UploadSelectedRows()" />
+                            @*<button type="reset" class="btn btn-default">Reset</button>*@
+                        </div>
+                    </div>
+                </footer>
+
+            </form>
+        </div>
+    </section>
+</div>
+
+
+

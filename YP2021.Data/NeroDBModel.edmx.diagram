@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6a747870798e4c209530e158c02979b8" Name="Diagram1" ZoomLevel="93">
+        <EntityTypeShape EntityType="NeroDBModel.Action" Width="1.5" PointX="6" PointY="28" />
+        <EntityTypeShape EntityType="NeroDBModel.ADRESLER" Width="1.5" PointX="16.25" PointY="44.125" />
+        <EntityTypeShape EntityType="NeroDBModel.AdresTipi" Width="1.5" PointX="14" PointY="39.875" />
+        <EntityTypeShape EntityType="NeroDBModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="50.75" />
+        <EntityTypeShape EntityType="NeroDBModel.AspNetUserRoles" Width="1.5" PointX="3" PointY="50.625" />
+        <EntityTypeShape EntityType="NeroDBModel.AspNetUsers" Width="1.5" PointX="0.75" PointY="45.75" />
+        <EntityTypeShape EntityType="NeroDBModel.AuditTrail" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="NeroDBModel.CariNakliyeOdemesi" Width="1.5" PointX="3.75" PointY="69.875" />
+        <EntityTypeShape EntityType="NeroDBModel.CariOdemeSekli" Width="1.5" PointX="3.75" PointY="72.375" />
+        <EntityTypeShape EntityType="NeroDBModel.CariTeslimatSekli" Width="1.5" PointX="3.75" PointY="75" />
+        <EntityTypeShape EntityType="NeroDBModel.CariVade" Width="1.5" PointX="3.75" PointY="59.75" />
+        <EntityTypeShape EntityType="NeroDBModel.CariVadeAltRakam" Width="1.5" PointX="3.75" PointY="67.375" />
+        <EntityTypeShape EntityType="NeroDBModel.CATEGORIES" Width="1.5" PointX="6" PointY="34.75" />
+        <EntityTypeShape EntityType="NeroDBModel.ContactTitle" Width="1.5" PointX="6" PointY="61" />
+        <EntityTypeShape EntityType="NeroDBModel.Currency" Width="1.5" PointX="11" PointY="37" />
+        <EntityTypeShape EntityType="NeroDBModel.DEPARTMAN" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="NeroDBModel.Department" Width="1.5" PointX="3.75" PointY="47.75" />
+        <EntityTypeShape EntityType="NeroDBModel.ExcelUploadLog" Width="1.5" PointX="10.5" PointY="92" />
+        <EntityTypeShape EntityType="NeroDBModel.FIRMA_TIPLERI" Width="1.5" PointX="3.75" PointY="65" />
+        <EntityTypeShape EntityType="NeroDBModel.Firm" Width="1.5" PointX="8.25" PointY="126.5" />
+        <EntityTypeShape EntityType="NeroDBModel.JobTitle" Width="1.5" PointX="3.75" PointY="54" />
+        <EntityTypeShape EntityType="NeroDBModel.MAINCATEGORIES" Width="1.5" PointX="6" PointY="76" />
+        <EntityTypeShape EntityType="NeroDBModel.MARKALAR" Width="1.5" PointX="6.75" PointY="5.75" />
+        <EntityTypeShape EntityType="NeroDBModel.Member" Width="1.5" PointX="6" PointY="44.75" />
+        <EntityTypeShape EntityType="NeroDBModel.MemberUserLevel" Width="1.5" PointX="16.25" PointY="50" />
+        <EntityTypeShape EntityType="NeroDBModel.MPRODUCTS" Width="1.5" PointX="13.25" PointY="42.5" />
+        <EntityTypeShape EntityType="NeroDBModel.MProductsLog" Width="1.5" PointX="13.25" PointY="32" />
+        <EntityTypeShape EntityType="NeroDBModel.MUSTERILER" Width="1.5" PointX="6" PointY="63.875" />
+        <EntityTypeShape EntityType="NeroDBModel.NDetay" Width="1.5" PointX="2.75" PointY="7.75" />
+        <EntityTypeShape EntityType="NeroDBModel.NUMUNELER" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="NeroDBModel.ODetay" Width="1.5" PointX="17.75" PointY="56.125" />
+        <EntityTypeShape EntityType="NeroDBModel.OEM" Width="1.5" PointX="13.25" PointY="49.75" />
+        <EntityTypeShape EntityType="NeroDBModel.OEMSUPNAME" Width="1.5" PointX="11" PointY="63.375" />
+        <EntityTypeShape EntityType="NeroDBModel.Orders" Width="1.5" PointX="15.5" PointY="54.125" />
+        <EntityTypeShape EntityType="NeroDBModel.OTPLog" Width="1.5" PointX="8.75" PointY="4.75" />
+        <EntityTypeShape EntityType="NeroDBModel.Permission" Width="1.5" PointX="8.25" PointY="45.625" />
+        <EntityTypeShape EntityType="NeroDBModel.ProductImage" Width="1.5" PointX="13.25" PointY="54.375" />
+        <EntityTypeShape EntityType="NeroDBModel.PRODUCTS" Width="1.5" PointX="8.25" PointY="55.5" />
+        <EntityTypeShape EntityType="NeroDBModel.SECTIONS" Width="1.5" PointX="4.75" PointY="8.75" />
+        <EntityTypeShape EntityType="NeroDBModel.sysdiagrams" Width="1.5" PointX="6.75" PointY="8.75" />
+        <EntityTypeShape EntityType="NeroDBModel.TEKLIFLER" Width="1.5" PointX="10.5" PointY="48.5" />
+        <EntityTypeShape EntityType="NeroDBModel.TEKLIFLER_DETAY" Width="1.5" PointX="18.75" PointY="49.375" />
+        <EntityTypeShape EntityType="NeroDBModel.TeklifDurumu" Width="1.5" PointX="8.25" PointY="65" />
+        <EntityTypeShape EntityType="NeroDBModel.TeklifTipi" Width="1.5" PointX="8.25" PointY="36.75" />
+        <EntityTypeShape EntityType="NeroDBModel.TokenLog" Width="1.5" PointX="8.75" PointY="8.75" />
+        <EntityTypeShape EntityType="NeroDBModel.TOPLANTILAR" Width="1.5" PointX="8.25" PointY="39" />
+        <EntityTypeShape EntityType="NeroDBModel.ToplantiMember" Width="1.5" PointX="10.5" PointY="40.5" />
+        <EntityTypeShape EntityType="NeroDBModel.ToplantiSebep" Width="1.5" PointX="6" PointY="39.625" />
+        <EntityTypeShape EntityType="NeroDBModel.ToplantiTipi" Width="1.5" PointX="6" PointY="42.125" />
+        <EntityTypeShape EntityType="NeroDBModel.ToplantiYetkiliKisi" Width="1.5" PointX="10.5" PointY="44.5" />
+        <EntityTypeShape EntityType="NeroDBModel.TPRODUCTS" Width="1.5" PointX="10.5" PointY="56" />
+        <EntityTypeShape EntityType="NeroDBModel.TProductsLog" Width="1.5" PointX="13.25" PointY="24.625" />
+        <EntityTypeShape EntityType="NeroDBModel.ULKELER" Width="1.5" PointX="3.75" PointY="77.5" />
+        <EntityTypeShape EntityType="NeroDBModel.UserLevelPermission" Width="1.5" PointX="19.25" PointY="44.125" />
+        <EntityTypeShape EntityType="NeroDBModel.UserLevels" Width="1.5" PointX="14" PointY="60" />
+        <EntityTypeShape EntityType="NeroDBModel.VADE" Width="1.5" PointX="10.75" PointY="5.75" />
+        <EntityTypeShape EntityType="NeroDBModel.YETKILI_KISILER" Width="1.5" PointX="8.25" PointY="48.875" />
+        <EntityTypeShape EntityType="NeroDBModel.ApiRequestLog" Width="1.5" PointX="10.75" PointY="8.75" />
+        <EntityTypeShape EntityType="NeroDBModel.AspNetUserClaims" Width="1.5" PointX="0.75" PointY="11.75" />
+        <EntityTypeShape EntityType="NeroDBModel.AspNetUserLogins" Width="1.5" PointX="10.75" PointY="11.75" />
+        <EntityTypeShape EntityType="NeroDBModel.NeroX" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="NeroDBModel.Tmp_Log" Width="1.5" PointX="14.75" PointY="8.75" />
+        <EntityTypeShape EntityType="NeroDBModel.UserLevelPermissions" Width="1.5" PointX="14.75" PointY="11.75" />
+        <AssociationConnector Association="NeroDBModel.FK_Permission_Action" />
+        <AssociationConnector Association="NeroDBModel.FK_UserLevelPermission_Action" />
+        <AssociationConnector Association="NeroDBModel.FK_ADRESLER_AdresTipi" />
+        <AssociationConnector Association="NeroDBModel.FK_ADRESLER_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_ADRESLER_Member_UpdatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_ADRESLER_MUSTERILER" />
+        <AssociationConnector Association="NeroDBModel.FK_ADRESLER_ULKELER" />
+        <AssociationConnector Association="NeroDBModel.FK_AspNetUserRoles_AspNetRoles" />
+        <AssociationConnector Association="NeroDBModel.FK_Member_AspNetRoles" />
+        <AssociationConnector Association="NeroDBModel.FK_AspNetUserRoles_AspNetUsers" />
+        <AssociationConnector Association="NeroDBModel.FK_MUSTERILER_CariNakliyeOdemesi" />
+        <AssociationConnector Association="NeroDBModel.FK_MUSTERILER_CariOdemeSekli" />
+        <AssociationConnector Association="NeroDBModel.FK_MUSTERILER_CariTeslimatSekli" />
+        <AssociationConnector Association="NeroDBModel.FK_MUSTERILER_CariVade" />
+        <AssociationConnector Association="NeroDBModel.FK_MUSTERILER_CariVadeAltRakam" />
+        <AssociationConnector Association="NeroDBModel.FK_PRODUCTS_CATEGORIES" />
+        <AssociationConnector Association="NeroDBModel.FK_YETKILI_KISILER_ContactTitle" />
+        <AssociationConnector Association="NeroDBModel.FK_MPRODUCTS_Currency" />
+        <AssociationConnector Association="NeroDBModel.FK_MProductsLog_Currency" />
+        <AssociationConnector Association="NeroDBModel.FK_ODetay_Currency" />
+        <AssociationConnector Association="NeroDBModel.FK_TEKLIFLER_DETAY_Currency" />
+        <AssociationConnector Association="NeroDBModel.FK_TPRODUCTS_Currency" />
+        <AssociationConnector Association="NeroDBModel.FK_TProductsLog_Currency" />
+        <AssociationConnector Association="NeroDBModel.FK_Member_Department" />
+        <AssociationConnector Association="NeroDBModel.FK_ExcelUploadLog_Firm" />
+        <AssociationConnector Association="NeroDBModel.FK_ExcelUploadLog_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_MUSTERILER_FIRMA_TIPLERI" />
+        <AssociationConnector Association="NeroDBModel.FK_Firm_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_Member_Firm" />
+        <AssociationConnector Association="NeroDBModel.FK_Member_JobTitle" />
+        <AssociationConnector Association="NeroDBModel.FK_PRODUCTS_MAINCATEGORIES" />
+        <AssociationConnector Association="NeroDBModel.FK_Member_Member_UpdatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_Member_MemberCreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_Member_MemberDeletedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_MemberUserLevel_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_MPRODUCTS_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_MPRODUCTS_Member_UpdatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_OEM_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_Orders_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_Orders_Member_UpdateBy" />
+        <AssociationConnector Association="NeroDBModel.FK_Permission_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_ProductImage_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_PRODUCTS_Member_Added" />
+        <AssociationConnector Association="NeroDBModel.FK_PRODUCTS_Member_Updated" />
+        <AssociationConnector Association="NeroDBModel.FK_TEKLIFLER_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_TEKLIFLER_Member1" />
+        <AssociationConnector Association="NeroDBModel.FK_TOPLANTILAR_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_TOPLANTILAR_Member_UpdatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_ToplantiMember_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_ToplantiMember_Member_AssignedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_ToplantiYetkiliKisi_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_TPRODUCTS_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_TPRODUCTS_Member_UpdatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_YETKILI_KISILER_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_YETKILI_KISILER_Member_UpdatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_MemberUserLevel_UserLevels" />
+        <AssociationConnector Association="NeroDBModel.FK_MPRODUCTS_MUSTERILER" />
+        <AssociationConnector Association="NeroDBModel.FK_MPRODUCTS_PRODUCTS" />
+        <AssociationConnector Association="NeroDBModel.FK_MUSTERILER_ULKELER" />
+        <AssociationConnector Association="NeroDBModel.FK_Orders_MUSTERILER" />
+        <AssociationConnector Association="NeroDBModel.FK_TEKLIFLER_MUSTERILER" />
+        <AssociationConnector Association="NeroDBModel.FK_TPRODUCTS_MUSTERILER" />
+        <AssociationConnector Association="NeroDBModel.FK_YETKILI_KISILER_MUSTERILER" />
+        <AssociationConnector Association="NeroDBModel.FK_ODetay_Orders" />
+        <AssociationConnector Association="NeroDBModel.FK_ODetay_PRODUCTS" />
+        <AssociationConnector Association="NeroDBModel.FK_OEM_OEMSUPNAME" />
+        <AssociationConnector Association="NeroDBModel.FK_OEM_PRODUCTS" />
+        <AssociationConnector Association="NeroDBModel.FK_Orders_YETKILI_KISILER" />
+        <AssociationConnector Association="NeroDBModel.FK_ProductImage_PRODUCTS" />
+        <AssociationConnector Association="NeroDBModel.FK_TEKLIFLER_DETAY_PRODUCTS" />
+        <AssociationConnector Association="NeroDBModel.FK_TPRODUCTS_PRODUCTS" />
+        <AssociationConnector Association="NeroDBModel.FK_TEKLIFLER_DETAY_TEKLIFLER" />
+        <AssociationConnector Association="NeroDBModel.FK_TEKLIFLER_TeklifDurumu" />
+        <AssociationConnector Association="NeroDBModel.FK_TEKLIFLER_TeklifTipi" />
+        <AssociationConnector Association="NeroDBModel.FK_TEKLIFLER_YETKILI_KISILER" />
+        <AssociationConnector Association="NeroDBModel.FK_TOPLANTILAR_ToplantiSebep" />
+        <AssociationConnector Association="NeroDBModel.FK_TOPLANTILAR_ToplantiTipi" />
+        <AssociationConnector Association="NeroDBModel.FK_ToplantiMember_TOPLANTILAR" />
+        <AssociationConnector Association="NeroDBModel.FK_ToplantiYetkiliKisi_TOPLANTILAR" />
+        <AssociationConnector Association="NeroDBModel.FK_ToplantiYetkiliKisi_YETKILI_KISILER" />
+        <AssociationConnector Association="NeroDBModel.FK_UserLevelPermission_UserLevels" />
+        <AssociationConnector Association="NeroDBModel.FK_TOPLANTILAR_Member_CreatedBy1" />
+        <AssociationConnector Association="NeroDBModel.FK_ODetay_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_ODetay_Member1" />
+        <EntityTypeShape EntityType="NeroDBModel.Ticket" Width="1.5" PointX="13.25" PointY="64.625" />
+        <EntityTypeShape EntityType="NeroDBModel.TicketMember" Width="1.5" PointX="20.5" PointY="56.375" />
+        <EntityTypeShape EntityType="NeroDBModel.TicketPriority" Width="1.5" PointX="11" PointY="71.625" />
+        <EntityTypeShape EntityType="NeroDBModel.TicketStatus" Width="1.5" PointX="11" PointY="69.25" />
+        <EntityTypeShape EntityType="NeroDBModel.TicketType" Width="1.5" PointX="11" PointY="67" />
+        <AssociationConnector Association="NeroDBModel.FK_Ticket_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_Ticket_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_TicketMember_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_TicketMember_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_Ticket_MUSTERILER" />
+        <AssociationConnector Association="NeroDBModel.FK_Ticket_TicketPriority" />
+        <AssociationConnector Association="NeroDBModel.FK_Ticket_TicketStatus" />
+        <AssociationConnector Association="NeroDBModel.FK_Ticket_TicketType" />
+        <AssociationConnector Association="NeroDBModel.FK_TicketMember_Ticket" />
+        <AssociationConnector Association="NeroDBModel.FK_PRODUCTS_Currency" />
+        <EntityTypeShape EntityType="NeroDBModel.B2BDealerType" Width="1.5" PointX="8.25" PointY="67.75" />
+        <AssociationConnector Association="NeroDBModel.FK_B2BDealerType_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_B2BDealerType_Member_UpdatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_MUSTERILER_B2BDealerType" />
+        <EntityTypeShape EntityType="NeroDBModel.MusteriDocument" Width="1.5" PointX="16.25" PointY="63" />
+        <AssociationConnector Association="NeroDBModel.FK_MusteriDocument_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_MusteriDocument_Member1" />
+        <AssociationConnector Association="NeroDBModel.FK_MusteriDocument_MUSTERILER" />
+        <EntityTypeShape EntityType="NeroDBModel.RelatedProduct" Width="1.5" PointX="18.5" PointY="63.75" />
+        <AssociationConnector Association="NeroDBModel.FK_RelatedProduct_Member" />
+        <AssociationConnector Association="NeroDBModel.FK_RelatedProduct_PRODUCTS" />
+        <AssociationConnector Association="NeroDBModel.FK_RelatedProduct_PRODUCTS_Related" />
+        <EntityTypeShape EntityType="NeroDBModel.ProductBundle" Width="1.5" PointX="21.5" PointY="51.625" />
+        <AssociationConnector Association="NeroDBModel.FK_ProductBundle_Member_CreatedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_ProductBundle_Member_DeletedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_ProductBundle_PRODUCTS" />
+        <AssociationConnector Association="NeroDBModel.FK_ProductBundle_PRODUCTS_Related" />
+        <AssociationConnector Association="NeroDBModel.FK_PRODUCTS_SECTIONS" />
+        <EntityTypeShape EntityType="NeroDBModel.TicketReply" Width="1.5" PointX="15.5" PointY="69.375" />
+        <AssociationConnector Association="NeroDBModel.FK_Ticket_Member_LastRepliedBy" />
+        <AssociationConnector Association="NeroDBModel.FK_TicketReply_Ticket" />
+        <AssociationConnector Association="NeroDBModel.FK_TicketReply_Member" />
+        <EntityTypeShape EntityType="NeroDBModel.Notification" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="NeroDBModel.SEHIRLER" Width="1.5" PointX="6" PointY="80.375" />
+        <AssociationConnector Association="NeroDBModel.FK_ADRESLER_SEHIRLER" />
+        <AssociationConnector Association="NeroDBModel.FK_MUSTERILER_SEHIRLER" />
+        <AssociationConnector Association="NeroDBModel.FK_SEHIRLER_ULKELER" />
+        <AssociationConnector Association="NeroDBModel.FK_MAINCATEGORIES_SECTIONS" />
+        <AssociationConnector Association="NeroDBModel.FK_CATEGORIES_MAINCATEGORIES" />
+        <AssociationConnector Association="NeroDBModel.FK_CATEGORIES_SECTIONS" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

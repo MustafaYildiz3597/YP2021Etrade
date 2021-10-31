@@ -1,0 +1,90 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<div class="row" ng-show="ShowingDiv=='Liste'" ng-cloak>
+    @*|| ShowingDiv=='detail'*@
+    <div class="col">
+        <section class="card card-primary">
+
+            <header class="card-header">
+                <div class="row">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <h2 class="card-title"><i class="fal fa-list"></i> B2B Stok Listesi</h2>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center justify-content-end" ng-show="Permission.Add == 1">
+                        @*<a href="/urunler/exceldenyukle" class="btn btn-success pull-right excel">Excelden Ürün Ekle <i class="fas fa-plus"></i></a>*@
+                        @*<button id="addToTable" class="btn btn-success pull-right excel" ng-click="/exceldenyukle">Excelden Ürün Ekle <i class="fas fa-plus"></i></button>*@
+                        @*<button id="addToTable" class="btn btn-success pull-right" ng-click="AddItem()">Ürün Ekle <i class="fas fa-plus"></i></button>*@
+                    </div>
+                </div>
+
+            </header>
+            <div class="card-body">
+
+                @*<form class="form-horizontal" style="margin-bottom:50px;" name="SearchForm" id="SearchForm" novalidate ng-submit="Search(SearchForm.$valid)">
+                    <div class="row">
+                        <div class="col-xl-3 mb-20">
+                            <select class="form-control" name="cmbFilterProductSegment" ng-model="FilterFormModel.ProductSectionID"
+                                    ng-options="psecitem.SECID as psecitem.NAME for psecitem in ProductSections">
+                                <option value="">--Tüm Segmentler--</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 mb-20">
+                            <select class="form-control" name="cmbFilterProductMCat" ng-model="FilterFormModel.ProductMCatID"
+                                    ng-options="pmcatitem.MCATID as pmcatitem.NAME for pmcatitem in ProductMainCategories | filter:criFilterMatchMaincat()">
+                                <option value="">--Tüm Ana Kategoriler--</option>
+                            </select>
+                        </div>
+
+                        <div class="col-xl-2 mb-20">
+                            <select class="form-control" name="cmbFilterProductCat" ng-model="FilterFormModel.ProductCatID"
+                                    ng-options="item.CATID as item.NAME for item in ProductCategories | filter:criFilterMatchCat()">
+                                <option value="">--Tüm Kategoriler--</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-2 mb-20">
+                            <input type="text" ng-model="FilterFormModel.txtFilterOEMNo" class="form-control oem-input" placeholder=OEM No" maxlength="15" />
+                        </div>
+                        <div class="col-xl-2 mb-20">
+                            <input type="button" id="btnCri" ng-click="Filtrele()" value="Listele" class="btn btn-primary" />
+                        </div>
+                    </div>*@
+                    @*<footer class="card-footer">
+                            <div class="row justify-content-end">
+                                <div class="col-sm-6">
+                                    <input type="button" id="btnCri" ng-click="Filtrele()" value="Listele" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </footer>*@
+                </form>
+
+                @*<div class="row">
+                        <div class="col-sm-12">
+                                <button id="addToTable" class="btn btn-primary pull-right" ng-click="Test()">TEST <i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>*@
+
+                <table id="entry-grid" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" class="table table-bordered table-striped mb-0 " @*class="table table-hover nowrap"*@></table>
+            </div>
+        </section>
+    </div>
+</div>

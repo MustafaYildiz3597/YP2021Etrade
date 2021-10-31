@@ -1,0 +1,41 @@
+﻿<!-- Modal Form -->
+<div id="modalImportPopup" class="modal-block modal-block-primary mfp-hide" style="max-width: 1200px;">
+    <section class="card">
+        <header class="card-header bg-primary text-white">
+            <div class="row">
+                <div class="col-md-11">
+                    <h2 class="card-title text-white">Toplu OEM Yükleme (Excel)</h2>
+                </div>
+                <div class="col-md-1 float-right">
+                    <button type="button" class="close text-white" ng-click="ClosePopup()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="card-body">
+
+            <form class="form-horizontal" name="UploadExcelForm" id="UploadExcelForm" novalidate ng-submit="UploadSelectedRows(UploadExcelForm.$valid)">
+
+                <div class="card-body">
+                    "Devam etmek için  Yükle butonuna basarak devam ediniz!"
+                </div>
+
+                <footer class="card-footer">
+                    <div class="row justify-content-end">
+                        <div class="col-sm-6">
+                            @*<button class="btn btn-primary">Submit</button>*@
+                            <input type="submit" class="btn btn-primary" value="Yükle" @*ng-click="UploadSelectedRows()"*@ />
+                            @*<button type="reset" class="btn btn-default">Reset</button>*@
+                        </div>
+                    </div>
+                </footer>
+
+            </form>
+        </div>
+    </section>
+</div>
+
+
+

@@ -1,0 +1,151 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@*<link href="~/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />*@
+<link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
+<link href='https://rawgit.com/Gary-Li/angular-scrollable-table/master/scrollable-table.css' rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="~/vendor/datatables/media/css/datatables.bootstrap4.css" />
+
+
+<style>
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+    }
+
+    form#SearchForm .container > .row > div > div > div {
+        width: 75%;
+        margin-left: 20px;
+    }
+
+    form#SearchForm .container > .row > div > div {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
+    .card-header + .card-body {
+        margin-bottom: 20px;
+    }
+
+    form#SearchForm .container > .row > div > div > label {
+        white-space: nowrap;
+    }
+
+    form#SearchForm {
+        margin-bottom: 10px;
+    }
+
+    .p-display p {
+        display: inline-block;
+    }
+</style>
+
+<link href="~/css/select.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">*@
+<link rel="stylesheet" href="~/css/select2.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
+
+<style>
+    .select2 > .select2-choice.ui-select-match {
+        /* Because of the inclusion of Bootstrap */
+        height: 29px;
+    }
+
+    .selectize-control > .selectize-dropdown {
+        top: 36px;
+    }
+    /* Some additional styling to demonstrate that append-to-body helps achieve the proper z-index layering. */
+    .select-box {
+        background: #fff;
+        position: relative;
+        z-index: 1;
+    }
+
+    .alert-info.positioned {
+        margin-top: 1em;
+        position: relative;
+        z-index: 10000; /* The select2 dropdown has a z-index of 9999 */
+    }
+
+    .ui-select-bootstrap > .ui-select-choices, .ui-select-bootstrap > .ui-select-no-choice {
+        display: block;
+    }
+
+    input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], textarea {
+        height: 25px;
+        width: 100%;
+    }
+
+
+    .ui-select-container {
+        width: 100% !important;
+    }
+
+    form#SearchForm .container > .row > div > div > div {
+        width: 48%;
+        margin: 0 0 2%;
+    }
+
+    form#SearchForm .container > .row > div > div > label {
+        width: 100%;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        min-height: 22px;
+    }
+
+    form#SearchForm .container > .row > div > div {
+        margin-left: 10px;
+    }
+</style>
+
+<section role="main" class="content-body" ng-init="Init('@ViewBag.FirmID', @ViewBag.View, @ViewBag.Add, @ViewBag.Update, @ViewBag.Delete )">
+    <header class="page-header">
+        <h2>TEKLİFLER</h2>
+
+        <div class="right-wrapper text-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li><span>Teklifler</span> </li>
+            </ol>
+
+            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>
+        </div>
+    </header>
+
+    @*@{ Html.RenderPartialIf("_MenuBar", Request.IsAuthenticated); }*@
+
+    <!-- start: page -->
+    @{ Html.RenderPartialIf("_OfferListForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_OfferViewForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_OfferDetailForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_OfferDeletePopupForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_ConfirmPopupForm", Request.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_BrowseBUKODPopup", Request.IsAuthenticated); }
+
+    <!-- end: page -->
+</section>
+
+@section Scripts {
+    <script type="text/javascript" src="https://rawgit.com/Gary-Li/angular-scrollable-table/master/angular-scrollable-table.js"></script>
+    @*<script src="~/js/angular-scrollable-table.js"></script>*@
+    <script src="~/Scripts/textAngular-sanitize.min.js"></script>
+    <script src="~/Scripts/textAngular.min.js"></script>
+    <script src="~/js/angularjs/teklifler.js?@DateTime.Now.Ticks"></script>
+    <script src="~/js/examples/examples.datatables.default.js"></script>
+    <script src="~/js/mask.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/fileuploader.js"></script>
+
+    @*<script src="~/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>*@
+    @*<script src="~/js/bootstrap-datepicker.tr.js"></script>*@
+    <script src="~/js/select.js"></script>
+    @*<script src="https://rawgit.com/michaelbromley/angularUtils-pagination/master/dirPagination.js"></script>*@
+    <script src="~/js/dirPagination.js"></script>
+}

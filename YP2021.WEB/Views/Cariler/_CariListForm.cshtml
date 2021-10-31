@@ -1,0 +1,101 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<div class="row" ng-show="ShowingDiv=='Liste'" ng-cloak>
+    @*|| ShowingDiv=='detail'*@
+    <div class="col">
+        <section class="card card-primary">
+            <header class="card-header">
+                <!-- <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div> -->
+                <div class="row">
+                    <div class="col-6"><h2 class="card-title"><i class="fal fa-list"></i> Cari Listesi</h2></div>
+                    <div class="col-6 d-flex align-items-center justify-content-end" ng-show="Permission.Add == 1"><button id="addToTable" class="btn btn-success pull-right" ng-click="AddItem()"><i class="fas fa-plus"></i> Cari Ekle </button></div>
+                </div>
+            </header>
+            <div class="card-body">
+
+                <form class="form-horizontal" name="SearchForm" id="SearchForm" novalidate ng-submit="Search(SearchForm.$valid)">
+                    <div class="row" ng-cloak>
+                        <div class="col-md-5 mb-20">
+                            <div class="form-group">
+                                <select class="form-control form-control" name="cmbFilterFirmType" ng-model="FilterFormModel.FirmTypeID"
+                                        ng-options="ftitem.ID as ftitem.TITLE for ftitem in FirmaTipleri">
+                                    <option value="">Firma Tipi Seç</option>
+                                    <option value="">--Hepsi--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-5 mb-20">
+                            <div class="form-group">
+                                <ui-select id="criUlke" name="criUlke" ng-model="multipleDemo.selectedCountry" theme="select2" ng-disabled="ctrl.disabled" sortable="true"
+                                           close-on-select="true" style="width: 800px;">
+                                    <ui-select-match placeholder="Ülke Seç..." allow-clear="true">{{multipleDemo.selectedCountry.UNAME}}</ui-select-match>
+                                    <ui-select-choices repeat="person in Ulkeler | propsFilter: {UID: $select.search, UNAME: $select.search}">
+                                        <div ng-bind-html="person.UNAME | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        @*<div class="col">
+                                <div class="form-group">
+                                    <label>Tarih</label>
+                                    <div>
+                                        <span class="text-danger" ng-show="(SearchForm.CriBeginDate.$dirty || SearchForm.$submitted) && SearchForm.CriBeginDate.$invalid">*</span>
+                                        <input type="text" id="CriBeginDate" name="CriBeginDate" ng-model="FilterFormModel.CriBeginDate" ui-mask="99/99/9999"
+                                               ng-pattern="dateFormat" model-view-value="true" ui-mask-placeholder="gg/AA/yyyy" autocomplete="off" />
+                                    </div>
+                                    <div>
+                                        <span class="text-danger" ng-show="(SearchForm.CriEndDate.$dirty || SearchForm.$submitted) && SearchForm.CriEndDate.$invalid">*</span>
+                                        <input type="text" id="CriEndDate" name="CriEndDate" ng-model="FilterFormModel.CriEndDate" ui-mask="99/99/9999"
+                                               ng-pattern="dateFormat" model-view-value="true" ui-mask-placeholder="gg/AA/yyyy" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>*@
+
+                        <div class="col-md-2 d-flex justify-content-end mb-20">
+                            <input type="submit" id="btnCri" value="Listele" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    @*<footer class="card-footer">
+                            <div class="row justify-content-end">
+                                <div class="col-sm-6">
+                                    <input type="button" id="btnCri" ng-click="Filtrele()" value="Listele" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </footer>*@
+
+                </form>
+
+                @*<div class="row">
+                        <div class="col-sm-12">
+                                <button id="addToTable" class="btn btn-primary pull-right" ng-click="AddItem()">Ekle <i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>*@
+                <table id="entry-grid" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" class="table table-bordered table-striped mb-0" @*class="table table-hover nowrap"*@></table>
+            </div>
+        </section>
+    </div>
+</div>

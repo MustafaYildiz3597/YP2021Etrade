@@ -1,0 +1,171 @@
+﻿@{
+    /**/
+
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<style>
+    th td {
+        min-width: 70px;
+    }
+</style>
+
+<div ng-show="ShowingDiv=='Liste'" ng-cloak>
+    @*|| ShowingDiv=='detail'*@
+
+    <section class="card card-primary">
+        <header class="card-header">
+            <!-- <div class="card-actions">
+                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+            </div> -->
+            <div class="row">
+                <div class="col-md-5">
+                    <h2 class="card-title"><i class="fal fa-list"></i> Müşteri Ürünleri Listesi</h2>
+                </div>
+                <div class="col-md-7 d-flex align-items-center mobil-buttons-4">
+                    <a href="/musteriurun/veriyukle" class="btn btn-success pull-right excel" style="margin-left:auto;">Excelden Yükle <i class="fas fa-plus"></i></a>
+                    @*<button class="btn btn-success pull-right mr-2" ng-click="ShowMUGridAddPopup()" style="margin-left:auto;"><i class="fas fa-upload text-white"> </i> Excel'den Müşteri Ekle (GridAdd)</button>*@
+                    <button ng-show="Permission.Add == 1" class="btn btn-success pull-right mr-2 mavi-btn" ng-click="ShowMUGridAddPopup()"><i class="fas fa-upload text-white"></i>  Ekle (GridAdd)</button>
+                    <button ng-show="Permission.Edit == 1" class="btn btn-success pull-right mr-2 sari-btn" ng-click="ShowMUGridEditPopup()"><i class="fas fa-upload text-white"></i> Düzenle (GridEdit)</button>
+                    <button ng-show="Permission.Add == 1" id="addToTable" class="btn btn-success pull-right" ng-click="AddItem()">Ekle <i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+        </header>
+        <div class="card-body">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <div class="row top-filtre">
+                        <div class="col-12">
+                            <form class="form-horizontal ng-pristine ng-valid" style="margin-bottom:20px;" name="SearchForm" id="SearchForm" novalidate="" ng-submit="Search(SearchForm.$valid)">
+                                <div class="row">
+                                    <div class="col-xl-5 mb-20">
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                @*<select class="form-control form-control-sm ng-pristine ng-valid ng-touched" name="cmbFilterProductSegment" ng-model="FilterFormModel.ProductSectionID" ng-options="psecitem.SECID as psecitem.NAME for psecitem in ProductSections"><option value="" class="" selected="selected">--Tüm Segmentler--</option><option value="number:4" label="Binek Araç">Binek Araç</option><option value="number:8" label="Dorse Parçaları">Dorse Parçaları</option><option value="number:6" label="Otobüs Parçaları">Otobüs Parçaları</option><option value="number:21" label="test">test</option><option value="number:7" label="Tır Parçaları">Tır Parçaları</option><option value="number:5" label="Traktör Parçaları">Traktör Parçaları</option></select>*@
+                                                <ui-select id="criMusteri" name="criMusteri" ng-model="multipleDemo.selectedFirms" theme="select2" ng-disabled="ctrl.disabled" sortable="true"
+                                                           close-on-select="true" style="width: 100%;">
+                                                    <ui-select-match placeholder="Müşteri Seç..." allow-clear="true">{{multipleDemo.selectedFirms.FIRMA_ADI}}</ui-select-match>
+                                                    <ui-select-choices repeat="person in Musteriler | propsFilter: {ID: $select.search, FIRMA_ADI: $select.search}">
+                                                        <div ng-bind-html="person.FIRMA_ADI | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-5 mb-20">
+                                        <div class="form-group row">
+                                            <div class="col-sm-12" id="musteriSearch">
+                                                <input type="text" placeholder="Ürün Ara" class="form-control" ng-model="FilterFormModel.ProductSearchText" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-2 mb-20">
+                                        <input type="submit" id="btnCri" @*ng-click="Filtrele()"*@ value="Listele" class="btn btn-primary btn-sm">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-2">
+
+
+                        </div>
+                    </div>
+
+                    <div class="row mt-4 mb-4">
+                        <div class="col-md-2 kayit-sayisi col-6 d-flex align-items-center">
+                            <!--input type="number" min="1" max="100" class="form-control" ng-model="pageSize"-->
+                            <select ng-model="pageSize" ng-options="o for o in pagesSizes"></select>
+                            <label for="search" class="margin-left:10px; margin-bottom:0px">Kayıt Göster</label>
+                        </div>
+                        <div class="col-md-2 col-6" style="margin-left:auto;">
+                            @*<div class="d-flex">
+                                    <label for="search">Ara:</label>
+                                    <input ng-model="q" id="search" class="form-control" placeholder="Tabloda Ara">
+                                </div>*@
+                        </div>
+                    </div>
+
+                    <div class="overflow-x">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Seç</th>
+                                    @*<th ng-click="sort('MPID')">MPID <span class="glyphicon sort-icon pull-right" ng-show="sortBy=='MPID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>*@
+                                    <th ng-click="sort('BUKOD')">BU Numarası<span class="pull-right" ng-class="{'fas fa-sort': sortBy!=='BUKOD', 'fas fa-chevron-up':(reverse && sortBy==='BUKOD'),'fas fa-chevron-down':(!reverse && sortBy==='BUKOD')}"></span></th>
+                                    <th ng-click="sort('FIRMA_ADI')">Müşteri Adı <span class="pull-right" ng-class="{'fas fa-sort': sortBy!=='FIRMA_ADI', 'fas fa-chevron-up':(reverse && sortBy==='FIRMA_ADI'),'fas fa-chevron-down':(!reverse && sortBy==='FIRMA_ADI')}"></span></th>
+                                    <th ng-click="sort('XPSNO')">Ürün No<span class="pull-right" ng-class="{'fas fa-sort': sortBy!=='XPSNO', 'fas fa-chevron-up':(reverse && sortBy==='XPSNO'),'fas fa-chevron-down':(!reverse && sortBy==='XPSNO')}"></span></th>
+                                    <th ng-click="sort('NAME')">Ürün Adı <span class="pull-right" ng-class="{'fas fa-sort': sortBy!=='NAME', 'fas fa-chevron-up':(reverse && sortBy==='NAME'),'fas fa-chevron-down':(!reverse && sortBy==='NAME')}"></span></th>
+                                    <th ng-click="sort('CreatedOn')">Eklenme Tarihi <span class="pull-right" ng-class="{'fas fa-sort': sortBy!=='CreatedOn', 'fas fa-chevron-up':(reverse && sortBy==='CreatedOn'),'fas fa-chevron-down':(!reverse && sortBy==='CreatedOn')}"></span></th>
+                                    <th ng-click="sort('UPDATED')">Güncellenme Tarihi <span class="pull-right" ng-class="{'fas fa-sort': sortBy!=='UPDATED', 'fas fa-chevron-up':(reverse && sortBy==='UPDATED'),'fas fa-chevron-down':(!reverse && sortBy==='UPDATED')}"></span></th>
+                                    <th ng-click="sort('PRICE')">Fiyat <span class="pull-right" ng-class="{'fas fa-sort': sortBy!=='PRICE', 'fas fa-chevron-up':(reverse && sortBy==='PRICE'),'fas fa-chevron-down':(!reverse && sortBy==='PRICE')}"></span></th>
+                                    <th ng-click="sort('CurrencyCode')">Para Birimi <span class="pull-right" ng-class="{'fas fa-sort': sortBy!=='CurrencyCode', 'fas fa-chevron-up':(reverse && sortBy==='CurrencyCode'),'fas fa-chevron-down':(!reverse && sortBy==='CurrencyCode')}"></span></th>
+                                    <th>Görüntüle</th>
+                                    <th ng-show="Permission.Edit == 1">Düzenle</th>
+                                    <th ng-show="Permission.Delete == 1">Sil</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="muitem in mufiltered = (MUList|orderBy:sortBy:reverse | filter:q ) | itemsPerPage: pageSize" pagination-id="mu_list" current-page="currentPage">
+                                    <td><input type="checkbox" ng-model="muitem.chk"></td>
+                                    @*<td ng-bind="muitem.MPID"></td>*@
+                                    <td ng-bind="muitem.BUKOD"></td>
+                                    <td ng-bind="muitem.FIRMA_ADI"></td>
+                                    <td ng-bind="muitem.XPSNO"></td>
+                                    <td ng-bind="muitem.NAME"></td>
+                                    <td ng-bind="muitem.CreatedOn"></td>
+                                    <td ng-bind="muitem.UPDATED"></td>
+                                    <td ng-bind="muitem.PRICE | number:2" class="text-right"></td>
+                                    @*<td ng-bind="muitem.CURRENCY"></td>*@
+                                    <td ng-bind="muitem.CurrencyCode"></td>
+                                    <td><a href="javascript:void(0);" ng-click="View(muitem.MPID)" class="goruntule-btn-round"><i class="fas fa-eye btn btn-primary"></i></a></td>
+                                    <td ng-show="Permission.Edit == 1"><a href="javascript:void(0);" ng-click="Edit(muitem.MPID)" class="duzenle-btn-round"><i class="fas fa-pencil-alt btn btn-success"></i></a></td>
+                                    <td ng-show="Permission.Delete == 1"><a href="javascript:void(0);" ng-click="ShowDeletePopup(muitem.MPID)" class="sil-btn-round"><i class="fas fa-times btn btn-danger"></i></a></td>
+
+                                    @*<td><input type="text" ng-model="meal.id" /></td>*@
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row text-center">
+                        <div class="col-md-6 text-left">
+                            Kayıt Adedi: <span ng-show="q != undefined && q != ''" ng-bind="mufiltered.length.toString() + ' (filtre) /'"></span> <span ng-bind="MUList.length"></span>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <dir-pagination-controls class="pull-right mr-4" id="muList" pagination-id="mu_list" boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+</div>

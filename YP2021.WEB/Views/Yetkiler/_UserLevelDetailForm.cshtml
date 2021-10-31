@@ -1,0 +1,125 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<div class="card" ng-show="ShowingDiv=='edit'" ng-cloak>
+    <div class="card-body p0">
+        <form class="form-horizontal" name="DetailForm" id="DetailForm" novalidate ng-submit="Save(DetailForm.$valid)">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn geri-btn" type="button" ng-click="BackToList()"><i class="fas fa-reply text-white"></i></button>
+                        <h2 ng-bind="'Yetki Düzenle'"></h2>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+                <div class="row">
+                    @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Yetki ID</label>
+                <div class="col-sm-12">
+                    <input type="text" readonly class="form-control" ng-model="FormModel.ID">
+                </div>
+            </div>
+        </div>*@
+                    @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label for="TeklifTipiID" class="col-sm-12 col-form-label">Teklif Tipi</label>
+                <div class="col-sm-12">
+                    <select class="form-control" ng-class="{'error': (DetailForm.TeklifTipiID.$dirty || DetailForm.$submitted) && DetailForm.TeklifTipiID.$invalid }"
+                            ng-options="item.ID as item.Title for item in TeklifTipiList"
+                            name="TeklifTipiID" ng-model="FormModel.TTIPI" required>
+                        <option value="">--Hepsi--</option>
+                    </select>
+                    <span style="width:100%;" ng-show="(DetailForm.TeklifTipiID.$dirty || DetailForm.$submitted) && DetailForm.TeklifTipiID.$invalid">
+                        <label class="error" ng-show="DetailForm.TeklifTipiID.$error.required">Zorunlu Alan</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label for="FirmID" class="col-sm-12 col-form-label">Firma Adı</label>
+                <div class="col-sm-12">
+                    <select class="form-control" ng-class="{'error': (DetailForm.FirmID.$dirty || DetailForm.$submitted) && DetailForm.FirmID.$invalid }"
+                            name="FirmID" ng-model="FormModel.MusteriID"
+                            ng-options="item.ID as item.FIRMA_ADI for item in Firmalar  | filter:criFilterFirmalar()" required>
+                        <option value="">--Firma Seçiniz--</option>
+                    </select>
+                    <span style="width:100%;" ng-show="(DetailForm.FirmID.$dirty || DetailForm.$submitted) && DetailForm.FirmID.$invalid">
+                        <label class="error" ng-show="DetailForm.FirmID.$error.required">Zorunlu Alan</label>
+                    </span>
+                </div>
+            </div>
+        </div>*@
+                    @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Yetkili Kişi</label>
+                <div class="col-sm-12">
+                    <select class="form-control" ng-class="{'error': (DetailForm.YetkiliKisi.$dirty || DetailForm.$submitted) && DetailForm.YetkiliKisi.$invalid}"
+                            name="YetkiliKisi" ng-model="FormModel.YetkiliKisiID"
+                            ng-options="item.ID as item.ADI + ' ' + item.SOYADI for item in YetkiliKisiler | filter:criFilterYetkiliKisiler()" required>
+                        <option value="">--Yetkili Seçiniz--</option>
+                    </select>
+                    <span style="width:100%;" ng-show="(DetailForm.YetkiliKisi.$dirty || DetailForm.$submitted) && DetailForm.YetkiliKisi.$invalid">
+                        <label class="error" ng-show="DetailForm.YetkiliKisi.$error.required">Zorunlu Alan</label>
+                    </span>
+                </div>
+            </div>
+        </div>*@
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Yetki</label>
+                            <span style="width:100%;" ng-show="(DetailForm.UserLevelName.$dirty || DetailForm.$submitted) && DetailForm.UserLevelName.$invalid">
+                                <label class="error" ng-show="DetailForm.UserLevelName.$error.required">Zorunlu Alan</label>
+                            </span>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" ng-model="FormModel.UserLevelName">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <!--Aktif-->
+                        <div class="form-group row">
+                            <label class="col-lg-12 control-label">Aktif/Pasif</label>
+                            <div class="col-lg-12">
+                                <div class="checkbox-default">
+                                    <input type="checkbox" ng-model="FormModel.IsActive">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                
+            </div>
+            <footer class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <button class="btn pink-btn">Kaydet</button>
+                </div>
+            </footer>
+
+        </form>
+    </div>
+</div>
+

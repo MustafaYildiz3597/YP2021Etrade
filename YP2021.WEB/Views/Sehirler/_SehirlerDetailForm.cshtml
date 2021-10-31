@@ -1,0 +1,73 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<div class="card" ng-show="ShowingDiv=='edit'" ng-cloak>
+    <div class="card-body p0">
+        <form class="form-horizontal" name="DetailForm" id="DetailForm" novalidate ng-submit="Save(DetailForm.$valid)">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn geri-btn" type="button" ng-click="BackToList()"><i class="fas fa-reply text-white"></i></button>
+                        <h2 ng-bind="'Şehir ' + breadcrumbs"></h2>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label" for="UNAME">Ülke</label>
+                            <div class="col-sm-12">
+                                <select class="form-control mb-3" name="UNAME" ng-model="FormModel.UID"
+                                        ng-class="{'text-danger': (DetailForm.UNAME.$dirty || DetailForm.$submitted) && DetailForm.UNAME.$invalid }"
+                                        ng-options="item.UID as item.UNAME for item in Countries | orderBy: 'UNAME'" required>
+                                    <option value="">---Seçiniz---</option>
+                                </select>
+                                <span style="width:100%;" ng-show="(DetailForm.UNAME.$dirty || DetailForm.$submitted) && DetailForm.UNAME.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.UNAME.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label" for="NAME">Şehir</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="NAME" ng-model="FormModel.NAME" required>
+                                <span style="width:100%;" ng-show="(DetailForm.NAME.$dirty || DetailForm.$submitted) && DetailForm.UNAME.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.NAME.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <input type="submit" class="btn pink-btn" value="Kaydet" />
+                </div>
+            </footer>
+
+        </form>
+    </div>
+</div>
+

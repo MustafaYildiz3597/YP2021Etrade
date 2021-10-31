@@ -1,0 +1,309 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+@*<link href="~/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />*@
+<link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
+@*<link rel="stylesheet" href="~/vendor/datatables/media/css/dataTables.bootstrap4.css" />*@
+<link rel="stylesheet" href="~/vendor/bootstrap-fileupload/bootstrap-fileupload.min.css" />
+<link href='https://rawgit.com/Gary-Li/angular-scrollable-table/master/scrollable-table.css' rel="stylesheet" type="text/css">
+
+<style>
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+    }
+</style>
+
+<section role="main" class="content-body" ng-init="Init('@ViewBag.FirmID')">
+    <header class="page-header">
+        <h2>NERO - Siparişler</h2>
+
+        <div class="right-wrapper text-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li><span>Excelden Yükle</span> </li>
+            </ol>
+
+            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>
+        </div>
+    </header>
+
+    @*@{ Html.RenderPartialIf("_MenuBar", Request.IsAuthenticated); }*@
+
+    <!-- start: page -->
+    <div class="row" ng-cloak>
+        <div class="col">
+            <section class="card">
+                <header class="card-header">
+                    <!-- <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                    </div> -->
+
+                    <h2 class="card-title">Sipariş Excelden Yükle</h2>
+                </header>
+
+                <div class="card-body" ng-show="ShowingDiv=='SelectExcel'">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <section class="card alt-card">
+                                <header class="card-header">
+                                    <h2 class="card-title">Excel Seçenekleri</h2>
+                                </header>
+                                <div class="card-body">
+
+                                    @if (role == "Admin")
+                                    {
+                                        @*<div class="form-group row">
+                                                <label class="col-lg-3 control-label text-lg-right pt-2">Firma </label>
+                                                <select class="form-control mb-3" name="firmID" ng-model="FirmID" ng-change="cmbChanged()" ng-options="item.ID as item.Title for item in Firms | orderBy: 'Title'" required>
+                                                    <option value="">---Seçiniz---</option>
+                                                </select>
+                                            </div>*@
+                                    }
+
+                                    <div class="form-group row">
+                                        <label class="col-lg-12 control-label pt-2">Excel Dosyası</label>
+                                        <div class="col-lg-12">
+                                            <input type="file" ngf-select="SelectFile($file)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="file" />
+                                            <div class="d-flex">
+                                                <input type="text" name="file-name" id="file-name" class="file-name" readonly="readonly">
+                                                <input type="button" class="dosya-btn" value="Yükle" @*ng-click="Upload()"*@>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="form-control mb-3" name="eimza" ng-model="SelectedSheet" ng-options="o for o in SheetNames" ng-change="GetSheetData()">
+                                                <option value="">Excel Sayfası Seç...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-lg-12">
+                            <section class="card alt-card">
+                                <header class="card-header">
+                                    <h2 class="card-title">Sütun Seçimi</h2>
+                                </header>
+                                <div class="card-body row">
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label" for="siparistarihi">Sipariş Tarihi</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="siparistarihi" ng-model="FormModel.OrderDate" @*ng-change="cmbChanged()"*@ ng-options="o for o in ColumnNames" required>
+                                                    <option value="">---Seçiniz---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label" for="siparisno">Sipariş No</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="siparisno" ng-model="FormModel.OrderNo" ng-change="cmbChanged()" ng-options="o for o in ColumnNames" required>
+                                                    <option value="">---Seçiniz---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label" for="musteriunvan">Müşteri Unvan</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="musteriunvan" ng-model="FormModel.FIRMA_ADI" ng-options="o for o in ColumnNames" required>
+                                                    <option value="">---Seçiniz---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label" for="BUKOD">BUKOD</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="BUKOD" ng-model="FormModel.BUKOD" ng-change="cmbChanged()" ng-options="o for o in ColumnNames" required>
+                                                    <option value="">---Seçiniz---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group ">
+                                            <label class="col-sm-12 control-label" for="ProductName">Ürün Adı</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="ProductName" ng-model="FormModel.ProductName" ng-change="cmbChanged()" ng-options="o for o in ColumnNames">
+                                                    <option value="">---Seçiniz---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group ">
+                                            <label class="col-sm-12 control-label" for="PCustomerCode">Müşteri Numarası</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="PCustomerCode" ng-model="FormModel.PCustomerCode" ng-change="cmbChanged()" ng-options="o for o in ColumnNames">
+                                                    <option value="">---Seçiniz---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group ">
+                                            <label class="col-sm-12 control-label" for="Quantity">Miktar</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="Quantity" ng-model="FormModel.Quantity" ng-change="cmbChanged()" ng-options="o for o in ColumnNames">
+                                                    <option value="">---Seçiniz---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group ">
+                                            <label class="col-sm-12 control-label" for="SalesPrice">Satış Fiyatı</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="SalesPrice" ng-model="FormModel.SalesPrice" ng-change="cmbChanged()" ng-options="o for o in ColumnNames">
+                                                    <option value="">---Seçiniz---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <input type="button" id="addToTable" value="Excelden Yükle" class="btn pink-btn" disabled="disabled" ng-disabled="isDisabled" ng-click="StartTransferFromExcel()">
+                                    </div>
+
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="card-body" ng-show="ShowingDiv=='ExcelData'">
+                    @*{{exceldata}}*@
+
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert" ng-show="alert==true">
+                        <div ng-bind="'Gönderilen toplam sipariş adedi: ' + TotalCount"></div>
+                        <div ng-bind="'Yüklenen toplam sipariş adedi: ' + SuccededCount"></div>
+                        <div>
+                            <ul>
+                                <li ng-repeat="item in MessageItems">{{item}}</li>
+                            </ul>
+                        </div>
+                        <button type="button" class="close" @*data-dismiss="alert"*@ aria-label="Close" ng-click="alert=false;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <header class="card-header">
+                        <div class="card-actions">
+                            @*<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>*@
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class="card-title">Excel Data</h2>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <button class="btn btn-default" type="button" ng-click="BackToList()"><i class="fas fa-reply"></i></button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h1>
+                                <span class="text-primary">Sipariş Listesi</span><br />
+                            </h1>
+                        </div>
+                        <div class="col-md-6">
+                            Filtre: <input type="text" class="form-control form-control-sm  col-sm-3" ng-model="oemfiltertext" maxlength="20">
+                            @*<button id="addToTable" class="btn btn-primary pull-right" ng-click="NewOrderOEM()"><i class="fas fa-plus text-white"></i></button>*@
+                        </div>
+                    </div>
+                    <scrollable-table watch="exceldata">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="checkAll" ng-model="checkall" ng-change="selectorhideall(checkall)"></th>
+                                    <th>Sipariş Tarihi</th>
+                                    <th>Sipariş No</th>
+                                    <th>Cari/Müşteri</th>
+                                    <th>Ürün Kodu</th>
+                                    <th>Ürün Açıklama</th>
+                                    <th>Ürün Müşteri No</th>
+                                    <th>Miktar</th>
+                                    <th>Satış Fiyatı</th>
+                                    @*<th>Ürün Üretici No</th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-show="exceldata.length == 0">
+                                    <td colspan="9">Boş liste.</td>
+                                </tr>
+                                <tr ng-repeat="(key, value) in exceldata | orderBy: 'BUKOD' | filter: listFilter" ng-init="value.isSelected = false;">
+                                    <td><input type="checkbox" ng-model="value.isSelected"></td>
+                                    <td ng-bind="value.OrderDate"></td>
+                                    <td ng-bind="value.OrderNo"></td>
+                                    <td ng-bind="value.CustomerTitle"></td>
+                                    <td ng-bind="value.BUKOD"></td>
+                                    <td ng-bind="value.ProductName"></td>
+                                    <td ng-bind="value.PCustomerCode"></td>
+                                    <td ng-bind="value.Quantity"></td>
+                                    <td ng-bind="value.SalesPrice"></td>
+                                    @*<td ng-bind="value.PSupplierNo"></td>*@
+                                    @*<td><input type="button" value="Edit" ng-click="EditOrderOEM(item.OEMID)" /></td>
+                                        <td><input type="button" value="Delete" ng-click="ShowDeleteOEMPopup(item.OEMID)" /></td>*@
+                                </tr>
+                            </tbody>
+                        </table>
+                    </scrollable-table>
+                    <div class="row mt-2">
+                        <div class="col-md-11">
+                            <button id="showImportPopup" class="btn btn-primary pull-right" ng-click="ShowOrderImportPopup()"><i class="fas fa-upload text-white"> Cari Seç & Veri Yükle</i></button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </div>
+
+    @{ Html.RenderPartialIf("_OrderExcelImportActionPopup", Request.IsAuthenticated); }
+    <!-- end: page -->
+</section>
+
+@section Scripts {
+    <script type="text/javascript" src="https://rawgit.com/Gary-Li/angular-scrollable-table/master/angular-scrollable-table.js"></script>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+    <script src="~/js/angularjs/OrderExcelImport.js?@DateTime.Now.Ticks"></script>
+    <script src="~/vendor/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
+    @*<script src="~/js/examples/examples.datatables.default.js"></script>*@
+    @*<script src="~/js/mask.js"></script>*@
+    <script src="~/Scripts/moment.min.js"></script>
+    @*<script src="~/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>*@
+    @*<script src="~/js/bootstrap-datepicker.tr.js"></script>*@
+
+}

@@ -1,0 +1,240 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+
+<div class="card" ng-show="ShowingDiv=='edit'" ng-cloak>
+ 
+    <div class="card-body p0">
+        <form class="form-horizontal" name="DetailForm" id="DetailForm" novalidate ng-submit="Save(DetailForm.$valid)">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-11">
+                        <button class="btn geri-btn" type="button" ng-click="BackToList()"><i class="fas fa-reply text-white"></i></button>
+                        <h2 ng-bind="'Sipariş > ' + OrderHeaderText"></h2>
+                    </div>
+                    <div class="col-md-1" ng-show="FormModel.OrderID != null">
+                        @*<a href="javascript:void(0);" class="text-success pull-right" ng-click="ExportOrderToExcel()"><i class="fas fa-3x fa-file-excel"></i></a>*@
+                        <label><a href="javascript:void(0);" class="text-success pull-right" ng-click="ExportOrderToExcel()"><i class="fas fa-3x fa-file-excel"></i></a></label>
+                        <label><a href="javascript:void(0);" class="text-danger pull-right" ng-click="ExportOrderToPDF()"><i class="fas fa-3x fa-file-pdf"></i></a></label>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Sipariş No</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" ng-model="FormModel.OrderNo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label for="FirmID" class="col-sm-12 col-form-label">Firma Adı</label>
+                            <div class="col-sm-12">
+                                @*form-control-sm*@
+                                <select class="form-control" ng-class="{'text-danger': (DetailForm.FirmID.$dirty || DetailForm.$submitted) && DetailForm.FirmID.$invalid }"
+                                        name="FirmID" ng-model="FormModel.MusteriID" ng-change="MusteriIDChanged(FormModel.MusteriID, {{FormModel.MusteriID}} + 0)"
+                                        ng-options="item.ID as item.FIRMA_ADI for item in Musteriler  | filter:criFilterFirmalar()" required>
+                                    <option value="">--Firma Seçiniz--</option>
+                                </select>
+                                <span style="width:100%;" ng-show="(DetailForm.FirmID.$dirty || DetailForm.$submitted) && DetailForm.FirmID.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.FirmID.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">M.TEMSİLCİSİ</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" ng-class="{'text-danger': (DetailForm.YetkiliKisi.$dirty || DetailForm.$submitted) && DetailForm.YetkiliKisi.$invalid}"
+                                        name="YetkiliKisi" ng-model="FormModel.EmployeeID" @*ng-model="FormModel.YetkiliKisiID"*@
+                                        ng-options="item.ID as item.ADI + ' ' + item.SOYADI for item in YetkiliKisiler | filter:criFilterYetkiliKisiler()" required>
+                                    <option value="">--Yetkili Seçiniz--</option>
+                                </select>
+                                <span style="width:100%;" ng-show="(DetailForm.YetkiliKisi.$dirty || DetailForm.$submitted) && DetailForm.YetkiliKisi.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.YetkiliKisi.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">SİPARİŞ TARİHİ</label>
+                            <div class="col-sm-12">
+                                <input type="text" id="OrderDate" class="form-control" name="OrderDate" ng-model="FormModel.OrderDate" ui-mask="99/99/9999"
+                                       ng-pattern="dateFormat" model-view-value="true" ui-mask-placeholder="gg/AA/yyyy" jqdatepicker autocomplete="off" required />
+                                <span style="width:100%;" ng-show="(DetailForm.OrderDate.$dirty || DetailForm.$submitted) && DetailForm.OrderDate.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.OrderDate.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="FormModel.OrderID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">E.TARİHİ</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.CreatedOn">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="FormModel.OrderID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">EKLEYEN</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.Hazirlayan">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="FormModel.OrderID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">G.TARİHİ</label>
+                            <div class="col-sm-12">
+                                <span type="text" class="form-control" ng-bind-html="FormModel.UpdatedOn"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-20" ng-show="FormModel.OrderID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">GÜNCELLEYEN</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.Guncelleyen">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Detaylar</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <scrollable-table watch="FormModel.OrderItems">
+                            <table id="scr-tbl" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        @*<th>ProductID</th>*@
+                                        <th>MÜŞTERİ ÜRÜN NO</th>
+                                        <th>BuCode</th>
+                                        <th>ÜRÜN ADI EN</th>
+                                        <th>Adet</th>
+                                        <th>Birim Fiyat</th>
+                                        <th>Toplam Fiyat</th>
+                                        <th>P.B.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-show="FormModel.OrderItems.length == 0">
+                                        <td colspan="13">Boş liste.</td>
+                                    </tr>@*| orderBy: 'ORDID'*@
+                                    <tr ng-repeat-start="item in FormModel.OrderItems" ng-show="ORDID != item.ORDID">
+                                        <td class="text-right" ng-bind="$index+1"></td>
+                                        <td ng-bind="item.CustomerCode"></td>
+                                        <td ng-bind="item.BuCode"></td>
+                                        <td ng-bind="item.NAME_EN"></td>
+                                        <td class="text-right" ng-bind="item.Quantity | number:0"></td>
+                                        <td class="text-right" ng-bind="item.UnitPrice | number:2"></td>
+                                        <td class="text-right" ng-bind="(item.Quantity * item.UnitPrice) || '' | number:2"></td>
+                                        <td ng-bind="item.CurrencyCode"></td>
+                                        <td>
+                                            <button type="button" ng-show="ORDID != item.ORDID && ORDID == 0" ng-click="TDInlineEdit(item.ORDID)" class="btn btn-warning  btn-xs">Düzenle</button>
+                                            <button type="button" ng-show="ORDID != item.ORDID && ORDID == 0" ng-click="TDInlineDelete(item.ORDID)" class="btn btn-danger btn-xs">Sil</button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="ORDID == item.ORDID" @*ng-form="tdform" ng-submit="TDInlineUpdate(tdform.$valid)"*@>
+                                        <td class="text-right" ng-bind="$index+1"></td>
+                                        <td>
+                                            <input type="text" ng-model="item.CustomerCode" />
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" ng-model="item.BuCode" />
+                                                <div class="input-group-append">
+                                                    <input class="btn-primary btn-xs-1" type="button" value="..." ng-click="BrowseBUKOD($index)" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="item.NAME_EN" />
+                                        </td>
+                                        <td>
+                                            <input type="number" yr-integer ng-model="item.Quantity" />
+                                        </td>
+                                        <td class="text-right"><input type="number" yr-Decimal ng-model="item.UnitPrice" /></td>
+                                        <td style="width:140px;" class="text-right" ng-bind="(item.Quantity * item.UnitPrice.toFixed(2) || '') | number:2"></td>
+                                        <td>
+                                            <select ng-model="item.CurrencyID" @*ng-change="eKPIChanged(KPI.KPIID, $index,$parent.$index)"*@
+                                                    ng-options="critem.ID as critem.Code for critem in Currencies">
+                                                <option value="">--Seçiniz--</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="button" ng-show="ORDID == item.ORDID" ng-click="TDInlineUpdate(item.ORDID)" class="btn kaydet-btn"><i class="fa fa-save"></i></button>
+                                            <button type="button" ng-show="ORDID == item.ORDID" ng-click="TDInlineCancel(item.ORDID)" class="btn vazgec-btn"><i class="fa fa-times"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat-end ng-show="ORDID == item.ORDID && item.error == true">
+                                        <td colspan="11" class="bg-danger text-white" ng-bind="item.errortext"></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-right"><h4 ng-bind="FormModel.OrderItems|sumByKey:'Quantity' | number:0"></h4></td>
+                                        <td></td>
+                                        <td class="text-right"><h4 ng-bind="FormModel.OrderItems|sumByKeyArr:['Quantity', 'UnitPrice'] | number:2"></h4></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <a id="bottomOfDiv"></a>
+                        </scrollable-table>
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button class="btn pink-btn" type="button" @*ng-show="linemode == ''"*@ ng-disabled="linemode != ''" ng-click="TDInlineAdd()"><i class="fas fa-plus"></i>EKLE </button>
+                            </div>
+                        </div>
+                        @*{{FormModel.OrderItems}}*@
+                    </div>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <input type="submit" class="btn pink-btn" value="Kaydet" ng-disabled="linemode != ''" />
+                    @*<button class="btn pink-btn">Kaydet</button>*@
+                </div>
+            </footer>
+
+        </form>
+    </div>
+</div>
+
+

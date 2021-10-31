@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+}
+@*<h2>Şifremi Unuttum</h2>*@
+
+<style type="text/css">
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+<section role="main" class="content-body" ng-cloak>
+    <header class="page-header">
+        <h2 ng-bind="PageHeaderText"></h2>
+
+        <div class="right-wrapper text-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li><span ng-bind="PageBreadCrumb"></span></li>
+            </ol>
+
+            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>
+        </div>
+    </header>
+    <div class="row">
+        <div class="col-md-4 d-none d-sm-block"></div>
+        <div class="col-md-4 sifremi-unuttum" ng-show="showingDiv=='1'" ng-cloak>
+            <form name="frmKayitOl" ng-submit="Step1(frmKayitOl.$valid)" novalidate>
+                <div class="sifre-title"><h1>Şifremi Unuttum</h1></div>
+                <div class="sifre-content">
+                    <div class="form-group row">
+                        <label class="col-lg-12 control-label" for="gsm">Cep Telefonu Numarası</label>
+                        <div class="col-lg-12">
+                            <input type="text" id="GSMNumber" name="GSMNumber" class="form-control" @inputpattern ng-model="KayitOlModel.GSMNumber" ng-pattern="/^[5-5]{1}[0-9]{2}-[0-9]{3}-[0-9]{4}$/" ui-mask="599-999-9999" model-view-value="true" ui-mask-placeholder autocomplete="off" required />
+                            <span class="text-danger" style="margin-top:5px; font-size:12px;" ng-show="frmKayitOl.$submitted && frmKayitOl.GSMNumber.$error.required">Cep Telefonu numaranızı giriniz.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="sifre-btn"><button type="submit" class="btn">Devam</button></div>
+            </form>
+        </div>
+        <div class="col-md-4 sifremi-unuttum" ng-show="showingDiv=='2'" ng-cloak>
+            <div>
+                <form name="frmOTP" id="frmOTP" ng-submit="Step2(frmOTP.$valid)" novalidate>
+                    <div class="sifre-title"><h1>Şifremi Unuttum</h1></div>
+                    <div class="sifre-content">
+                        <div class="form-group row">
+                            <label class="col-lg-12 control-label p0">Kalan Süre</label>
+                            <div class="col-lg-12 form-control" ng-bind="Showcounter()"></div>
+                        </div>
+
+                        <div class="form-group row">
+                            <input class="form-control col-lg-12" type="text" id="Code" name="Code" ng-model="VerifyFormModel.Code" ui-mask="9999" ui-mask-placeholder-char="X" model-view-value="true" autocomplete="off" required @inputpattern />
+                            <span class="text-danger col-lg-12" style="margin-top:5px; font-size:12px;" ng-show="VerifyForm.$submitted && !VerifyForm.$valid">Doğrulama Kodunu Giriniz!</span>
+                        </div>
+                    </div>
+                    <div class="sifre-btn"><input type="submit" class="btn" name="dogrula" value="DOĞRULA" ng-if="counter > 0"></div>
+                </form>
+            </div>
+            <div>
+                <div class="form-group row">
+                    <p class="col-lg-12 center">
+                        Üzgünüz! Süre doldu.<br />Yeni bir DOĞRULAMA KODU ALMAK için<br /> TEKRAR GÖNDER butonuna basınız.
+                    </p>
+                </div>
+                <div class="form-group row">
+                    <a href="" class="btn btn-primary" ng-click="ResendOTP()">TEKRAR GÖNDER</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 sifremi-unuttum" ng-show="showingDiv=='3'" ng-cloak>
+            <form name="changePasswordForm" ng-submit="Step3(changePasswordForm.$valid)" novalidate>
+                <div class="sifre-title"><h1>Şifremi Unuttum</h1></div>
+                <div class="sifre-content">
+                    <div class="form-group row mb-20">
+                        <label class="col-lg-12 control-label " for="Newpassword">Yeni Şifre</label>
+                        <div class="col-lg-12">
+                            <input type="password" class="form-control" name="Newpassword" maxlength="32" ng-model="changePassword.user.newpassword" autocomplete="off" required>
+                            <div style="margin-top:5px; font-size:12px;">Şifreniz En az 8 karakter, küçük harf büyük harf rakam ve özel karakter içermelidir.</div>
+                            <span style="width:100%;" ng-show="(changePasswordForm.Newpassword.$dirty || changePasswordForm.$submitted) && changePasswordForm.Newpassword.$invalid">
+                                <label class="error" ng-show="changePasswordForm.Newpassword.$error.required">Zorunlu Alan</label>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-20">
+                        <label class="col-lg-12 control-label" for="confirmPassword">Yeni Şifre (Tekrar)</label>
+                        <div class="col-lg-12">
+                            <input type="password" class="form-control" name="confirmPassword" maxlength="32" ng-model="changePassword.user.confirmPassword" autocomplete="off" required compare-to="changePassword.user.newpassword">
+                            <span style="width:100%;" ng-show="(changePasswordForm.confirmPassword.$dirty || changePasswordForm.$submitted) && changePasswordForm.confirmPassword.$invalid">
+                                <label class="error" ng-show="changePasswordForm.confirmPassword.$error.required">Zorunlu Alan</label>
+                                <label class="error" ng-show="changePasswordForm.confirmPassword.$error.compareTo">Şifre ve tekrarı eşleşmiyor</label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="sifre-btn"><button type="submit" class="btn">Şifre Değiştir</button></div>
+            </form>
+        </div>
+        <div class="col-md-4 sifremi-unuttum" ng-show="showingDiv=='tebrikler'" ng-cloak>
+            <div class="sifre-content">
+                <p class="tebrikler">Şifreniz başarılı bir şekilde değiştirildi.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <script src="~/js/angularjs/sifremiunuttum.js?@DateTime.Now.Ticks"></script>
+    <script src="~/js/mask.js"></script>
+    @*<script type="text/javascript" src="assets/js/jquery.timer.js"></script>*@
+}
+
+

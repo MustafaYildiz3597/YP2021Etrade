@@ -1,0 +1,114 @@
+﻿<!-- Modal Form -->
+<div id="modalTUGridAddPopup" class="modal-block modal-block-primary mfp-hide">
+    <section class="card">
+        <header class="card-header bg-primary text-white">
+            <div class="row">
+                <div class="col-10">
+                    <h2 class="card-title d-flex align-items-center" ng-bind="'Tedarikçi Ürünleri (Grid ADD)'"></h2>
+                </div>
+                <div class="col-2 text-right">
+                    <button class="btn d-flex align-items-center pull-right kapat-btn" ng-click="ClosePopup()"><i class="fas fa-times text-white"></i></button>
+                </div>
+            </div>
+        </header>
+
+        <div class="card-body">
+
+            <div class="alert alert-primary alert-dismissible fade show" role="alert" ng-show="alert==true">
+                <div ng-bind="'Toplam kayıt adedi: ' + TotalCount"></div>
+                <div ng-bind="'Eklenen kayıt adedi: ' + SuccededCount"></div>
+                <div>
+                    <ul>
+                        <li ng-repeat="item in ReturnObj">{{item.Description}}</li>
+                    </ul>
+                </div>
+                <button type="button" class="close" @*data-dismiss="alert"*@ aria-label="Close" ng-click="alert=false;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="row mb-20">
+
+                <!--Tedarikçi seç-->
+                <div class="col-sm-6 mb-0">
+                    <ui-select ng-model="multipleDemo.selectedFirmsGrdAdd" ng-disabled="ctrl.disabled" sortable="true" close-on-select="false" style="width: 600px;">
+                        <ui-select-match placeholder="Tedarikçi Seç..." allow-clear="true">{{multipleDemo.selectedFirmsGrdAdd.FIRMA_ADI}}</ui-select-match>
+                        <ui-select-choices repeat="person in Tedarikciler | propsFilter: {ID: $select.search, FIRMA_ADI: $select.search}">
+                            <div ng-bind-html="person.FIRMA_ADI | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+                <!--ürün seçme ve ekleme butonları-->
+                <div class="col-sm-6">
+                    <label class="pull-right">
+                        <button class="btn btn-primary" ng-click="AddRowTUGridAdd()"><i class="fas fa-plus text-white"></i> Ürün Ekle</button>
+                    </label>
+                    <label class="pull-right">
+                        <button class="btn mavi-btn mr-10" ng-click="BrowseBUKOD('m')"><i class="fas fa-plus text-white"></i> Ürün listesinden Toplu Ekle</button>
+                    </label>
+                </div>
+            </div>
+            <form class="form-horizontal" name="GridAddForm" novalidate>
+                @*<div class="form-group row">
+                        <label class="col-lg-3 control-label text-lg-right pt-2" for="cmbTedarikci">Tedarikçi</label>
+                        <div class="col-lg-6">
+                            <select class="form-control" ng-class="{'error': (UploadExcelForm.cmbMusteri.$dirty || UploadExcelForm.$submitted) && UploadExcelForm.cmbMusteri.$invalid}" name="cmbMusteri" ng-model="FormModel.MusteriID"
+                                    ng-options="psecitemD.ID as psecitemD.FIRMA_ADI for psecitemD in Tedarikciler" required>
+                                <option value="">--Seçiniz--</option>
+                            </select>
+                            <span style="width:100%;" ng-show="(UploadExcelForm.cmbMusteri.$dirty || UploadExcelForm.$submitted) && UploadExcelForm.cmbMusteri.$invalid">
+                                <label class="error" ng-show="UploadExcelForm.cmbMusteri.$error.required">Zorunlu Alan</label>
+                            </span>
+                        </div>
+                    </div>*@
+                <div class="overflow-x">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                @*<th>TPID</th>*@
+                                <th>BU Numarası</th>
+                                @*<th>Firma</th>*@
+                                <th>Tedarikçi No</th>
+                                <th>Ürün Adı</th>
+                                <th>Fiyat</th>
+                                <th>P.B.</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="tuitem in GridAddModel">
+                                @*<td ng-bind="tuitem.TPID"></td>*@
+                                <td>
+                                    <label><input class="form-control  form-text" type="text" ng-model="tuitem.BUKOD" /></label>
+                                    <label><input class="form-text btn-primary btn-xs-1" type="button" value="..." ng-click="BrowseBUKOD('s', $index)" style="background: #9daec4;" /></label>
+                                </td>
+                                @*<td ng-bind="tuitem.FIRMA_ADI"></td>*@
+                                <td><input class="form-control  form-text" type="text" ng-model="tuitem.XPSNO" /></td>
+                                <td><input class="form-control  form-text" type="text" ng-model="tuitem.NAME" /></td>
+                                <td class="text-right"><input type="number" yr-integer class="form-control  form-text" ng-model="tuitem.PRICE" /></td>
+                                <td>
+                                    <select class="form-control  form-text" ng-model="tuitem.CURRENCY" ng-change="CurrencyChangedGridADD(tuitem.TPID, tuitem.CURRENCY)"
+                                            ng-options="critem.ID as critem.Code for critem in Currencies">
+                                        <option value="">--Seçiniz--</option>
+                                    </select>
+                                </td>
+                                <td> <button class="btn sil-btn-round" ng-click="DeleteRowGridAdd($index)"><i class="fas fa-times"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <footer class="card-footer">
+                    <div class="row justify-content-end">
+                        <div class="col-sm-6">
+                            <button class="btn pink-btn pull-right" ng-click="InsertRowsToTUListGridAdd()"><i class="fas fa-save text-white"></i> KAYDET</button>
+                        </div>
+                    </div>
+                </footer>
+
+            </form>
+        </div>
+    </section>
+</div>
+
+
+

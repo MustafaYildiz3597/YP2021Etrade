@@ -1,0 +1,150 @@
+﻿@using Nero2021.Models
+@model LoginViewModel
+
+@{
+    ViewBag.Title = "Üye Girişi";
+    Layout = "~/Views/Shared/_SigninLayout.cshtml";
+}
+
+
+<section class="section section-angled section-angled-reverse section-funnel border-0 m-0 section-dark">
+    <div class="section-angled-layer-top section-angled-layer-increase-angle bg-light" style="padding: 4rem 0;"></div>
+    <div class="container">
+        <div class="row align-items-center ">
+            <!-- start: page -->
+            <section class="body-sign" style="margin-top: -100px;">
+                <div class="center-sign">
+                    <a href="/" class="logo float-left">
+                        <img src="/images/nero-logo-white.png" height="" alt="" title="" />
+                    </a>
+
+                    <div class="panel card-sign ">
+                        <div class="card-title-sign mt-3 text-right">
+                            <h2 class="title"><i class="fas fa-user mr-1"></i>GİRİŞ YAP</h2>
+                        </div>
+                        <div class="card-body">
+                            @using (Html.BeginForm("", "uye-girisi", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group mb-20">
+                                    <label>Kullanıcı Adı</label>
+                                    <div class="input-group">
+                                        @*<input name="username" type="text" class="form-control form-control-lg" />*@
+                                        <input type="email" name="Email" id="Email" class="form-control" placeholder="E-Posta">
+                                        <span class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <div class="clearfix">
+                                        <label class="float-left">Şifre</label>
+                                        @*<a href="Sifremi_unuttum.aspx" class="float-right">Şifremi Unuttum!</a>*@
+                                        <a href="/sifremi-unuttum" class="float-right" style="font-size: 12px; color: #212529; text-decoration: underline;">Şifremi Unuttum</a>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="password" name="Password" id="Password" class="form-control" placeholder="Şifre">
+                                        @*<input name="pwd" type="password" class="form-control form-control-lg" />*@
+                                        <span class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        @*<div class="checkbox-custom checkbox-default">
+                                            <input id="RememberMe" name="rememberme" type="checkbox" />
+                                            <label for="RememberMe">Beni Hatırla</label>
+                                        </div>*@
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <button type="submit" class="btn btn-primary black-btn">Giriş Yap</button>
+                                        @*<asp:Button Text="Giriş Yap" CssClass="btn btn-primary" runat="server" ID="btnAccess" OnClick="btnAccess_Click" />*@
+                                    </div>
+                                </div>
+                                @*<p class="text-center">Henüz bir hesabınız yok mu? <a href="Pages-Signup.aspx">Üye Ol!</a></p>*@
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- end: page -->
+            <div class="col-lg-5 text-center px-lg-0 large-logo" style="margin-top: -100px;">
+                <div class="center-sign">
+                    <a href="/" class="logo float-left hidden-xs">
+                        <img src="/images/by-automotive.jpg" height="420" alt="" title="" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-funnel-layer-bottom" style="bottom: -30px;">
+        <div class="section-funnel-layer bg-color-light-scale-1"></div>
+        <div class="section-funnel-layer bg-color-light-scale-1"></div>
+    </div>
+</section>
+
+
+
+@*<div class="panel card-sign">
+        <div class="card-title-sign mt-3 text-right ">
+            <h2 class="title text-uppercase font-weight-bold m-0"><i class="fas fa-user mr-1"></i> ÜYE GİRİŞİ</h2>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("", "uye-girisi", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+            {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group mb-3">
+                <label>E-Posta</label>
+                <div class="input-group">
+                    <input type="email" name="Email" id="Email" class="form-control" placeholder="E-Posta">
+                    <span class="input-group-append">
+                        <span class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </span>
+                </div>
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                <div class="clearfix">
+                    <label class="float-left">Şifre</label>
+                    <a href="/sifremi-unuttum" class="float-right">Şifremi Unuttum</a>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="Password" id="Password" class="form-control" placeholder="Şifre">
+                    <span class="input-group-append">
+                        <span class="input-group-text">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </span>
+                </div>
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="row">
+                <div class="col-sm-8">
+
+                </div>
+                <div class="col-sm-4 text-right">
+                    <button type="submit" class="btn btn-primary mt-2">Giriş Yap</button>
+                </div>
+            </div>
+
+
+            }
+        </div>
+    </div>*@
+

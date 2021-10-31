@@ -1,0 +1,162 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<div class="card" ng-show="ShowingDiv=='new'" ng-cloak>
+
+    <div class="card-body p0">
+        <form class="form-horizontal" name="DetailForm" id="DetailForm" novalidate ng-submit="Save(DetailForm.$valid)">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-11">
+                        <button class="btn geri-btn" type="button" ng-click="BackToList()"><i class="fas fa-reply text-white"></i></button>
+                        <h2 ng-bind="'Ticket > ' + TicketHeaderText"></h2>
+                    </div>
+                    <div class="col-md-1">
+                        @*<a href="javascript:void(0);" class="text-success pull-right" ng-click="ExportOrderToExcel()"><i class="fas fa-3x fa-file-excel"></i></a>*@
+                        @*<label><a href="javascript:void(0);" class="text-success pull-right" ng-click="ExportOrderToExcel()"><i class="fas fa-3x fa-file-excel"></i></a></label>
+                            <label><a href="javascript:void(0);" class="text-danger pull-right" ng-click="ExportOrderToPDF()"><i class="fas fa-3x fa-file-pdf"></i></a></label>*@
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Kullanıcılar</label>
+                            <div class="col-sm-12">
+                                <ui-select multiple id="MemberID" name="MemberID" ng-model="FormModel.selectedMembers" @*theme="bootstrap"*@ ng-disabled="ctrl.disabled" sortable="true" close-on-select="false">
+                                    <ui-select-match placeholder="Yetkili Seç...">{{($item.FirstName || '') + " " + ($item.LastName || '') }}</ui-select-match>
+                                    <ui-select-choices repeat="person in Members | propsFilter: {FirstName: $select.search, LastName: $select.search}">
+                                        <div ng-bind-html="(person.FirstName || '') + ' ' + (person.LastName || '') | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span style="width:100%;" ng-show="(DetailForm.MemberID.$dirty || DetailForm.$submitted) && DetailForm.MemberID.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.MemberID.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20"></div>
+
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label for="FirmID" class="col-sm-12 col-form-label">Firma</label>
+                            <div class="col-sm-12">
+                                <ui-select id="FirmID" name="FirmID" ng-model="FormModel.selectedFirm" theme="select2" ng-disabled="ctrl.disabled" sortable="true"
+                                           close-on-select="true" style="width: 100%;">
+                                    <ui-select-match placeholder="Firma Seç..." allow-clear="true">{{FormModel.selectedFirm.FIRMA_ADI}}</ui-select-match>
+                                    <ui-select-choices repeat="person in Firmalar | propsFilter: {ID: $select.search, FIRMA_ADI: $select.search}">
+                                        <div ng-bind-html="person.FIRMA_ADI | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span style="width:100%;" ng-show="(DetailForm.FirmID.$dirty || DetailForm.$submitted) && DetailForm.FirmID.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.FirmID.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20"></div>
+                    <div class="col-md-4 mb-20">
+                        <select class="form-control" name="cmbOfferType" ng-model="FormModel.TicketTypeID" ng-options="item.ID as item.label for item in TicketTypes">
+                            <option value="">Ticket Tipi</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-20">
+                        <select class="form-control" name="cmbStatus" ng-model="FormModel.StatusID" ng-options="item.ID as item.Name for item in TicketStatus">
+                            <option value="">Durum</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-20">
+                        <select class="form-control" name="cmbPriority" ng-model="FormModel.PriorityID" ng-options="item.ID as item.Name for item in TicketPriorities">
+                            <option value="">Öncelik</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Konu</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" ng-model="FormModel.Title" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20"></div>
+
+                    <div class="col-md-12 mb-20">
+                        <div class="form-group row">
+                            <label class="col-lg-12 control-label" for="ProductSort">Detay </label>
+                            <div class="col-lg-12">
+                                <div class="form-content" ckeditor="data.options" ng-model="FormModel.DetailText"></div>
+                                @*<text-angular name="EDITOR_TABLE_FR" class="form-content" ng-model="FormModel.EDITOR_TABLE_FR"></text-angular>*@
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-3 mb-20" ng-show="DetailForm.ID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">E.TARİHİ</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="DetailForm.CreatedOn">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="DetailForm.ID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">EKLEYEN</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="DetailForm.CreatedBy">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="DetailForm.ID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">G.TARİHİ</label>
+                            <div class="col-sm-12">
+                                <span type="text" class="form-control" ng-bind-html="DetailForm.UpdatedOn"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-20" ng-show="DetailForm.ID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">GÜNCELLEYEN</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="DetailForm.UpdatedBy">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <footer class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <input type="submit" class="btn pink-btn" value="Kaydet" />
+                    @*<button class="btn pink-btn">Kaydet</button>*@
+                </div>
+            </footer>
+
+        </form>
+    </div>
+</div>

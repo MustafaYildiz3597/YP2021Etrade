@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Erişim Engellendi";
+}
+
+
+<section class="body-error error-outside">
+    <div class="center-error">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-error mb-3">
+                    <h2 class="error-code text-danger text-center font-weight-semibold m-0">HATA</h2>
+                    <p class="error-explanation text-center">Üzgünüz, bu sayfaya erişiminiz bulunmuyor.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+
+    <script src="~/Areas/admin/Scripts/accessdenied.js?v=@DateTime.Now.Ticks"></script>
+
+}

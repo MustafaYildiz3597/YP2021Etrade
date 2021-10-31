@@ -1,0 +1,292 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+
+<div class="card" ng-show="ShowingDiv=='edit'" ng-cloak>
+    <div class="card-body p0">
+        <form class="form-horizontal" name="DetailForm" id="DetailForm" novalidate ng-submit="Save(DetailForm.$valid)">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-11">
+                        <button class="btn geri-btn" type="button" ng-click="BackToList()"><i class="fas fa-reply text-white"></i></button>
+                        <h2 ng-bind="'Teklif > ' + OfferHeaderText"></h2>
+                    </div>
+                    <div class="col-md-1">
+                        @*<a href="javascript:void(0);" class="text-success pull-right" ng-click="ExportOfferToExcel()"><i class="fas fa-3x fa-file-excel"></i></a>*@
+                        <label><a href="javascript:void(0);" class="text-success pull-right" ng-click="ExportOfferToExcel()"><i class="fas fa-3x fa-file-excel"></i></a></label>
+                        <label><a href="javascript:void(0);" class="text-danger pull-right" ng-click="ExportOfferToPDF()"><i class="fas fa-3x fa-file-pdf"></i></a></label>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+                <div class="row">
+                    @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Teklif ID</label>
+                <div class="col-sm-12">
+                    <input type="text" readonly class="form-control" ng-model="FormModel.TID">
+                </div>
+            </div>
+        </div>*@
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label for="TeklifTipiID" class="col-sm-12 col-form-label">Teklif Tipi</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" ng-class="{'text-danger': (DetailForm.TeklifTipiID.$dirty || DetailForm.$submitted) && DetailForm.TeklifTipiID.$invalid }"
+                                        ng-options="item.ID as item.Title for item in TeklifTipiList"
+                                        name="TeklifTipiID" ng-model="FormModel.TTIPI" required>
+                                    <option value="">--Hepsi--</option>
+                                </select>
+                                <span style="width:100%;" ng-show="(DetailForm.TeklifTipiID.$dirty || DetailForm.$submitted) && DetailForm.TeklifTipiID.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.TeklifTipiID.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label for="FirmID" class="col-sm-12 col-form-label">Firma Adı</label>
+                            <div class="col-sm-12">
+                                @*form-control-sm*@
+                                <select class="form-control" ng-class="{'text-danger': (DetailForm.FirmID.$dirty || DetailForm.$submitted) && DetailForm.FirmID.$invalid }"
+                                        name="FirmID" ng-model="FormModel.MusteriID" ng-change="MusteriIDChanged(FormModel.MusteriID, ({{FormModel.MusteriID  }} + 0) )"
+                                        ng-options="item.ID as item.FIRMA_ADI for item in Firmalar  | filter:criFilterFirmalar()" required>
+                                    <option value="">--Firma Seçiniz--</option>
+                                </select>
+                                <span style="width:100%;" ng-show="(DetailForm.FirmID.$dirty || DetailForm.$submitted) && DetailForm.FirmID.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.FirmID.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Yetkili Kişi</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" ng-class="{'text-danger': (DetailForm.YetkiliKisi.$dirty || DetailForm.$submitted) && DetailForm.YetkiliKisi.$invalid}"
+                                        name="YetkiliKisi" ng-model="FormModel.YetkiliKisiID"
+                                        ng-options="item.ID as item.ADI + ' ' + item.SOYADI for item in YetkiliKisiler | filter:criFilterYetkiliKisiler()" required>
+                                    <option value="">--Yetkili Seçiniz--</option>
+                                </select>
+                                <span style="width:100%;" ng-show="(DetailForm.YetkiliKisi.$dirty || DetailForm.$submitted) && DetailForm.YetkiliKisi.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.YetkiliKisi.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Konu</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" ng-model="FormModel.TITLE">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Teklif Durumu</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" ng-class="{'text-danger': (DetailForm.TDURUMU.$dirty || DetailForm.$submitted) && DetailForm.TDURUMU.$invalid }"
+                                        ng-options="item.ID as item.Title for item in TeklifDurumuList"
+                                        name="TDURUMU" ng-model="FormModel.TDURUMU" required>
+                                    <option value="">--Seçiniz--</option>
+                                </select>
+                                <span style="width:100%;" ng-show="(DetailForm.TDURUMU.$dirty || DetailForm.$submitted) && DetailForm.TDURUMU.$invalid">
+                                    <label class="text-danger" ng-show="DetailForm.TDURUMU.$error.required">Zorunlu Alan</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Hazırlayan</label>
+                <div class="col-sm-12">
+                    <input type="text" readonly class="form-control" ng-model="FormModel.Hazirlayan">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Eklenme Tarihi</label>
+                <div class="col-sm-12">
+                    <input type="text" readonly class="form-control" ng-model="FormModel.EklenmeTarihi">
+                </div>
+            </div>
+        </div>*@
+                    <div class="col-md-12 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">İçerik</label>
+                            <div class="col-sm-12">
+                                <text-angular name="ICERIK" class="form-content" ng-model="FormModel.ICERIK"></text-angular>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="FormModel.TID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">E.TARİHİ</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.CreatedOn">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="FormModel.TID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">EKLEYEN</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.Hazirlayan">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20" ng-show="FormModel.TID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">G.TARİHİ</label>
+                            <div class="col-sm-12">
+                                <span type="text" class="form-control" ng-bind-html="FormModel.UpdatedOn"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-20" ng-show="FormModel.TID != null">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">GÜNCELLEYEN</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="FormModel.Guncelleyen">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Detaylar</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <scrollable-table watch="FormModel.TeklifItems">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Mus.TEd.Kod</th>
+                                        <th>BuCode</th>
+                                        <th>Oem</th>
+                                        <th>Oem1</th>
+                                        <th>Name</th>
+                                        <th>Detay</th>
+                                        <th>Quantity</th>
+                                        <th>UnitPrice</th>
+                                        <th>TotalPrice</th>
+                                        <th>CURRENCY</th>
+                                        <th>İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-show="FormModel.TeklifItems.length == 0">
+                                        <td colspan="13">Boş liste.</td>
+                                    </tr>@*| orderBy: 'TDID'*@
+                                    <tr ng-repeat-start="item in FormModel.TeklifItems" ng-show="TDID != item.TDID">
+                                        <td class="text-right" ng-bind="$index+1"></td>
+                                        <td ng-bind="item.CustomerCode"></td>
+                                        @*<td ng-bind="item.ProductID"></td>*@
+                                        @*<td ng-bind="item.CustomerCode"></td>*@
+                                        <td ng-bind="item.BuCode"></td>
+                                        <td ng-bind="item.Oem"></td>
+                                        <td ng-bind="item.Oem1"></td>
+                                        <td ng-bind="item.Name"></td>
+                                        <td ng-bind="item.Detay"></td>
+                                        <td ng-bind="item.Quantity"></td>
+                                        <td class="text-right" ng-bind="item.UnitPrice"></td>
+                                        <td class="text-right" ng-bind="(item.Quantity * item.UnitPrice) || ''"></td>
+                                        <td ng-bind="item.CurrencyCode"></td>
+                                        <td>
+                                            <button type="button" ng-show="TDID != item.TDID && TDID == 0" ng-click="TDInlineEdit(item.TDID)" class="btn btn-warning btn-xs">Düzenle</button>
+                                            <button type="button" ng-show="TDID != item.TDID && TDID == 0" ng-click="TDInlineDelete(item.TDID)" class="btn btn-danger btn-xs">Sil</button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="TDID == item.TDID" @*ng-form="tdform" ng-submit="TDInlineUpdate(tdform.$valid)"*@>
+                                        <td class="text-right" ng-bind="$index+1"></td>
+                                        <td>
+                                            <input type="text" ng-model="item.CustomerCode" />
+                                        </td>
+                                        <td>
+                                            <label><input type="text" ng-model="item.BuCode" /></label>
+                                            <label><input class="form-control btn-primary btn-xs-1" type="button" value="..." ng-click="BrowseBUKOD($index)" /></label>
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="item.Oem" />
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="item.Oem1" />
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="item.Name" />
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="item.Detay" />
+                                        </td>
+                                        <td>
+                                            <input type="number" ng-model="item.Quantity" />
+                                        </td>
+                                        <td class="text-right"><input type="number" ng-model="item.UnitPrice" /></td>
+                                        <td class="text-right" ng-bind="(item.Quantity * item.UnitPrice) || ''"></td>
+                                        <td>
+                                            <select ng-model="item.CURRENCY" @*ng-change="eKPIChanged(KPI.KPIID, $index,$parent.$index)"*@
+                                                    ng-options="critem.ID as critem.Code for critem in Currencies">
+                                                <option value="">--Seçiniz--</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="button" ng-show="TDID == item.TDID" ng-click="TDInlineUpdate(item.TDID)" class="btn kaydet-btn"><i class="fa fa-save"></i></button>
+                                            <button type="button" ng-show="TDID == item.TDID" ng-click="TDInlineCancel(item.TDID)" class="btn vazgec-btn"><i class="fa fa-times"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat-end ng-show="TDID == item.TDID && item.error == true">
+                                        <td colspan="11" class="bg-danger text-white" ng-bind="item.errortext"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a id="bottomOfDiv"></a>
+                        </scrollable-table>
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button class="btn pink-btn" type="button" ng-disabled="linemode != ''" ng-click="TDInlineAdd()"><i class="fas fa-plus"></i> EKLE</button>
+                            </div>
+                        </div>
+                        @*{{FormModel.TeklifItems}}*@
+                    </div>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <div class="d-flex justify-content-end">
+    <input type="submit" class="btn pink-btn" value="Kaydet" ng-disabled="linemode != ''" />               
+    @*<button class="btn pink-btn">Kaydet</button>*@
+                </div>
+            </footer>
+
+        </form>
+    </div>
+</div>
+
+

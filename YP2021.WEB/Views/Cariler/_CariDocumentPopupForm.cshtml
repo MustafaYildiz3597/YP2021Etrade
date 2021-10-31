@@ -1,0 +1,115 @@
+﻿<!-- Modal Form -->
+<div id="modalMusteriDocumentForm" class="modal-block modal-block-primary mfp-hide">
+    <section class="card">
+        <header class="card-header bg-primary">
+            <div class="row">
+                <div class="col-10 d-flex align-items-center">
+                    <h2 class="card-title" ng-bind="MusteriDocumentHeaderText"></h2>
+                </div>
+                <div class="col-2  d-flex align-items-center justify-content-end">
+                    <button class="btn kapat-btn pull-right" ng-click="CloseMusteriDocumentPopup()"><i class="fas fa-times text-white"></i></button>
+                </div>
+            </div>
+        </header>
+        <div class="card-body" ng-show="MusteriDocumentFormPopup=='form'">
+            <form class="form-horizontal" name="MusteriDocumentForm" id="MusteriDocumentForm" novalidate ng-submit="SaveMusteriDocumentForm(MusteriDocumentForm.$valid)">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-20">
+                            <div class="form-group row">
+                                <label for="ProfileImageTitle" class="col-sm-12 control-label">Dosya Başlık</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="MusteriDocTitle" class="form-control" ng-model="MusteriDocumentFormData.Title" required />
+                                    <label class="error" ng-show="MusteriDocumentForm.$submitted && MusteriDocumentForm.MusteriDocTitle.$error.required">Başlık girmelisiniz!</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 control-label">Sıra</label>
+                                <div class="col-sm-12">
+                                    <input type="number" name="MusteriDocRankNumber" class="form-control" ng-model="MusteriDocumentFormData.RankNumber" required />
+                                    <label class="error"  ng-show="MusteriDocumentForm.$submitted && MusteriDocumentForm.MusteriDocRankNumber.$error.required">Sıra No girmelisiniz!</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-20">
+                            <div class="form-group row">
+                                <label for="ProfileImage" class="col-sm-12 control-label">Döküman:</label>
+                                <div class="col-sm-12" ng-show="MusteriDocumentFormData.ID != null" ng-bind="MusteriDocumentFormData.FileName"></div>
+                                <div class="col-sm-12" ng-show="MusteriDocumentFormData.ID == null">
+                                    <input id="attachmentX" name="attachmentX" type="file" class="file"
+                                           @*onchange="angular.element(this).scope().readURLQImgX(this);"*@
+                                           accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+                                           ng-model="MusteriDocumentFormData.MusteriDocumentData"
+                                           valid-file
+                                           ng-required="MusteriDocumentFormData.ID == null" />
+                                    <div class="d-flex">
+                                        <input type="text" name="file-name" id="file-name" class="file-name col-8" readonly="readonly">
+                                        <input type="button" class="dosya-btn" value="Yükle" ng-click="Upload()">
+                                    </div>
+                                    <label class="error" ng-show="MusteriDocumentForm.$submitted && MusteriDocumentForm.attachmentX.$error.required">Dosya seçmelisiniz!</label>
+                                </div>
+                            </div>
+                            </div>
+                        @*<div class="col-sm-6 seciliGorsel">
+        <img id="qimgx" src="~/Content/images/noimage.png" alt="" />
+         <a class="btn sil-btn" ng-click="deleteFilesImgX()"
+            data-toggle="tooltip" data-original-title="Sil" value="Sil"
+            ng-show="silImgXBtnGoster">
+             <i class="fas fa-times text-white"></i>
+         </a>
+                    </div>*@
+                        <div class="col-md-12 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 control-label">Açıklama</label>
+                                <div class="col-sm-12">
+                                    <text-angular class="form-content" ng-model="MusteriDocumentFormData.Description"></text-angular>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*{{MusteriDocumentFormData}}<br />*@
+                    @*silImgXBtnGoster: {{silImgXBtnGoster}}*@
+                </div>
+                <footer class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <input type="submit" class="btn pink-btn" value="Kaydet" />
+                        @*<input type="button" class="btn btn-danger" value="Sil" ng-click="deleteProduct()" />*@
+                        @*<button class="btn btn-default modal-dismiss">Kapat</button>*@
+                    </div>
+                </footer>
+            </form>
+        </div>
+        <div class="card-body" ng-show="MusteriDocumentFormPopup=='delete'">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-11">
+                        <button class="btn geri-btn" type="button" ng-click="CloseMusteriDocumentPopup()"><i class="fas fa-reply text-white"></i></button>
+                        <h2>Resim Silme</h2>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+
+                <div class="card-body">
+                    @*"{{OEMHeaderText}}"*@ Seçtiğiniz dosya silinecektir. Devam etmek için Sil butonuna basarak devam edebilirsiniz.
+                </div>
+
+            </div>
+            <footer class="card-footer">
+                <div class="d-flex justify-content-end">
+                    @*<button class="btn btn-primary">Submit</button>*@
+                    <input type="button" class="btn btn-danger mr-10" value="Sil" ng-click="DeleteMusteriDocument()" />
+                    <button class="btn btn-default" ng-click="CloseMusteriDocumentPopup()">Vazgeç</button>
+                </div>
+            </footer>
+
+        </div>
+    </section>
+</div>
+
+
+

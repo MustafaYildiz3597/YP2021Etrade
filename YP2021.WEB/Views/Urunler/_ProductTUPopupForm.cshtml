@@ -1,0 +1,390 @@
+﻿<!-- Modal Form -->
+<div id="modalProductTUForm" class="modal-block modal-block-primary mfp-hide" style="max-width: 1600px;">
+    <section class="card">
+        <header class="card-header bg-primary">
+            <div class="row">
+                <div class="col-10 d-flex align-items-center">
+                    <h2 class="card-title" ng-bind="'Ürün Tedarikçileri - Ürün: ' + TUPopupTitle"></h2>
+                </div>
+                <div class="col-2 d-flex align-items-center justify-content-end">
+                    <button id="closeProductTU" class="btn kapat-btn pull-right" ng-click="CloseProductTUPopup()"><i class="fas fa-times text-white"></i></button>
+                </div>
+            </div>
+
+        </header>
+        <div class="card-body" ng-show="TUPopup=='TUlist'">
+
+            <div class="row">
+                <div class="col-6 d-flex align-items-center alt-title mb-20">
+                    <h1>Tedarikçiler</h1>
+                </div>
+                <div class="col-6 d-flex align-items-center justify-content-end mb-20">
+                    <button id="addToTable" class="btn pink-btn pull-right" ng-click="NewProductTU()"><i class="fas fa-plus text-white"></i> EKLE</button>
+                </div>
+            </div>
+            <scrollable-table watch="ProductTUList">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            @*<th>TPID</th>*@
+                            @*<th>BU NO</th>*@
+                            <th>TEDARİKÇİ ADI</th>
+                            <th>TEDARİKÇİ NO</th>
+                            <th>NAME</th>
+                            <th>OEM</th>
+                            <th>E.TARİHİ</th>
+                            <th>G.TARİHİ</th>
+                            <th>FİYAT</th>
+                            <th>P.B.</th>
+                            <th>BRAND</th>
+                            @*<th>CATNAME</th>*@
+                            <th>Görüntüle</th>
+                            <th>Güncelle</th>
+                            <th>Sil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-show="ProductTUList.length == 0">
+                            <td colspan="15">Boş liste.</td>
+                        </tr>
+                        <tr ng-repeat="item in ProductTUList | orderBy: 'BUKOD'">
+                            @*<td ng-bind="item.TPID"></td>*@
+                            @*<td ng-bind="item.BUKOD"></td>*@
+                            <td ng-bind="item.FIRMA_ADI"></td>
+                            <td ng-bind="item.XPSNO"></td>
+                            <td ng-bind="item.NAME"></td>
+                            <td ng-bind="item.OEM"></td>
+                            <td ng-bind="item.ADDED"></td>
+                            <td ng-bind="item.UPDATED"></td>
+                            <td ng-bind="item.PRICE | number:2""></td>
+                            <td ng-bind="item.CurrencyCode"></td>
+                            <td ng-bind="item.BRAND"></td>
+                            @*<td ng-bind="item.CATNAME"></td>*@
+                            <td><a href="javascript:void(0);" class="goruntule-btn-round" ng-if="Permission_tedarikciurun.ViewPermission==1" ng-click="ViewProductTU(item.TPID)"><i class="fas fa-eye btn btn-primary text-white"></i></a></td>
+                            <td><a href="javascript:void(0);" class="duzenle-btn-round" ng-if="Permission_tedarikciurun.UpdatePermission==1" ng-click="EditProductTU(item.TPID)"><i class="fas fa-pencil-alt btn btn-success text-white"></i></a></td>
+                            <td><a href="javascript:void(0);" class="sil-btn-round" ng-if="Permission_tedarikciurun.DeletePermission==1" ng-click="ShowDeleteTUPopup(item.TPID)"><i class="fas fa-trash-alt btn btn-danger text-white"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </scrollable-table>
+        </div>
+
+        <!-- TUProducts Form Edit -->
+        <div class="card-body" ng-show="TUPopup=='TUForm'">
+            <form class="form-horizontal" name="TUForm" id="TUForm" novalidate ng-submit="SaveProductTU(TUForm.$valid)">
+
+                <header class="card-header alt-title">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn geri-btn" type="button" ng-click="BackToProductTUList()"><i class="fas fa-reply text-white"></i></button>
+                            <h2 ng-bind="'Tedarikçi: ' +TUHeaderText"></h2>
+                        </div>
+                    </div>
+                </header>
+                <div class="card-body">
+                    <div class="row">
+                        @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label for="TPID" class="col-sm-12 col-form-label">TPID</label>
+                <div class="col-sm-12">
+                    <input type="text" readonly class="form-control" id="TPID" ng-model="TUFormData.TPID">
+                </div>
+            </div>
+        </div>*@
+                        <div class="col-md-6 mb-20">
+                            <div class="form-group row">
+                                <label for="FIRMA_ADI" class="col-sm-12 col-form-label">TEDARİKÇİ ADI</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" ng-class="{'error': (TUForm.FIRMA_ADI.$dirty || TUForm.$submitted) && TUForm.FIRMA_ADI.$invalid}" name="FIRMA_ADI" ng-model="TUFormData.MusteriID"
+                                            ng-options="item.ID as item.FIRMA_ADI for item in Tedarikciler" required ng-change="TPMusteriChanged(TUFormData.MusteriID)">
+                                        <option value="">--Seçiniz--</option>
+                                    </select>
+                                    <span style="width:100%;" ng-show="(TUForm.FIRMA_ADI.$dirty || TUForm.$submitted) && TUForm.FIRMA_ADI.$invalid">
+                                        <label class="error" ng-show="TUForm.FIRMA_ADI.$error.required">Zorunlu Alan</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-20">
+                            <div class="form-group row">
+                                <label for="XPSNO" class="col-sm-12 col-form-label">TEDARİKÇİ NO</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="XPSNO" ng-model="TUFormData.XPSNO">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-20">
+                            <div class="form-group row">
+                                <label for="BUESKI" class="col-sm-12 col-form-label">OEM</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="BUESKI" ng-model="TUFormData.OEM">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-20">
+                            <div class="form-group row">
+                                <label for="NAME" class="col-sm-12 col-form-label">NAME</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="NAME" ng-model="TUFormData.NAME">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 mb-20">
+                            <div class="form-group row">
+                                <label for="PRICE" class="col-sm-12 col-form-label">FİYAT</label>
+                                <div class="col-sm-12">
+                                    <input type="number" class="form-control" ng-model="TUFormData.PRICE">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20">
+                            <div class="form-group row">
+                                <label for="CURRENCY" class="col-sm-12 col-form-label">P.B</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" ng-class="{'error': (TUForm.CURRENCY.$dirty || TUForm.$submitted) && TUForm.CURRENCY.$invalid}" name="CURRENCY" ng-model="TUFormData.CURRENCY"
+                                            ng-options="item.ID as item.Code for item in Currencies" required ng-change="TPCurencyChanged(TUFormData.CURRENCY)">
+                                        <option value="">--Seçiniz--</option>
+                                    </select>
+                                    <span style="width:100%;" ng-show="(TUForm.CURRENCY.$dirty || TUForm.$submitted) && TUForm.CURRENCY.$invalid">
+                                        <label class="error" ng-show="TUForm.CURRENCY.$error.required">Zorunlu Alan</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-20">
+                            <div class="form-group row">
+                                <label for="BRAND" class="col-sm-12 col-form-label">BRAND</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="BRAND" ng-model="TUFormData.BRAND">
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-md-6 mb-20">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label"></label>
+                                <div class="col-sm-12">
+                                </div>
+                            </div>
+                        </div>*@
+
+                        <div class="col-md-3 mb-20" ng-show="TUFormData.TPID!=null">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label">E.TARİHİ</label>
+                                <div class="col-sm-12">
+                                    <input type="text" readonly class="form-control" ng-model="TUFormData.ADDED">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20" ng-show="TUFormData.TPID!=null">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label">EKLEYEN</label>
+                                <div class="col-sm-12">
+                                    <input type="text" readonly class="form-control" ng-model="TUFormData.ADDEDBY">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 mb-20" ng-show="TUFormData.TPID!=null">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label">G.TARİHİ</label>
+                                <div class="col-sm-12">
+                                    <input type="text" readonly class="form-control" id="UPDATED" ng-model="TUFormData.UPDATED">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20" ng-show="TUFormData.TPID!=null">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label">GÜNCELLEYEN</label>
+                                <div class="col-sm-12">
+                                    <input type="text" readonly class="form-control" ng-model="TUFormData.UPDATEDBY">
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label for="CATNAME" class="col-sm-12 col-form-label">CATNAME</label>
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" id="CATNAME" ng-model="TUFormData.CATNAME">
+                </div>
+            </div>
+        </div>*@
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <input type="submit" class="btn pink-btn" value="Kaydet" />
+                    </div>
+                </footer>
+            </form>
+        </div>
+
+        <!-- TUProducts Form View -->
+        <div class="card-body" ng-show="TUPopup=='TUFormview'">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn geri-btn" type="button" ng-click="BackToProductTUList()"><i class="fas fa-reply text-white"></i></button>
+                        <h2 ng-bind="'Tedarikçi: ' + TUHeaderText"></h2>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+                <div class="row">
+                    @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">TPID</label>
+                <div class="col-sm-12">
+                    <input type="text" readonly class="form-control" ng-model="TUFormData.TPID">
+                </div>
+            </div>
+        </div>*@
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">TEDARİKÇİ ADI</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="TUFormData.FIRMA_ADI">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">TEDARİKÇİ NO</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="TUFormData.XPSNO">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">NAME</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="TUFormData.NAME">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">OEM</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="TUFormData.OEM">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">FİYAT</label>
+                            <div class="col-sm-12">
+                                <span class="form-control" ng-bind="TUFormData.PRICE | number:2"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">P.B</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="TUFormData.CurrencyCode">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">BRAND</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="TUFormData.BRAND">
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<div class="col-md-6 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label"></label>
+                            <div class="col-sm-12">
+                            </div>
+                        </div>
+                    </div>*@
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">E.TARİHİ</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="TUFormData.ADDED">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">EKLEYEN</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="TUFormData.ADDEDBY">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">G.TARİHİ</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="TUFormData.UPDATED">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-20">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">GÜNCELLEYEN</label>
+                            <div class="col-sm-12">
+                                <input type="text" readonly class="form-control" ng-model="TUFormData.UPDATEDBY">
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<div class="col-md-6 mb-20">
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">CATNAME</label>
+                <div class="col-sm-12">
+                    <input type="text" readonly class="form-control" ng-model="TUFormData.CATNAME">
+                </div>
+            </div>
+        </div>*@
+                </div>
+            </div>
+            <footer class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <button class="btn pink-btn" ng-click="EditProductTU(TUFormData.TPID)">Düzenle</button>
+                    @*<input type="button" class="btn btn-danger" value="Sil" ng-click="deleteProduct()" />*@
+                    @*<button class="btn btn-default modal-dismiss">Kapat</button>*@
+                </div>
+            </footer>
+        </div>
+
+        <div class="card-body" ng-show="TUPopup=='TUdelete'">
+            <header class="card-header alt-title">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn geri-btn" type="button" ng-click="BackToProductTUList()"><i class="fas fa-reply text-white"></i></button>
+                        <h2 ng-bind="'Tedarikçi: ' + TUHeaderText"></h2>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+
+                <div class="card-body">
+                    Ürün Tedarikçi kaydı silinecektir. Devam etmek için Sil butonuna basarak devam edebilirsiniz.
+                </div>
+
+            </div>
+            <footer class="card-footer">
+                <div class="d-flex justify-content-end">
+                    @*<button class="btn btn-primary">Submit</button>*@
+                    <input type="button" class="btn btn-danger mr-10" value="Sil" ng-click="DeleteProductTU()" />
+                    <button class="btn btn-default" ng-click="BackToProductTUList()">Vazgeç</button>
+                </div>
+            </footer>
+
+        </div>
+
+    </section>
+</div>
+
+

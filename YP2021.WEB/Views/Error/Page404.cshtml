@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Page404";
+    Layout = "~/Views/Shared/_SigninLayout.cshtml";
+}
+
+
+<section class="body-error error-outside">
+    <div class="center-error">
+
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="main-error mb-3">
+                    <h2 class="error-code text-danger text-center font-weight-semibold m-0">404 <i class="fas fa-file"></i></h2>
+                    <p class="error-explanation text-danger  text-center">@ViewBag.Message</p>
+                </div>
+            </div>
+            @*<div class="col-lg-4">
+                <h4 class="text">@ViewBag.Message</h4>
+                 
+            </div>*@
+        </div>
+    </div>
+</section>

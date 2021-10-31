@@ -1,0 +1,101 @@
+﻿@{
+    /**/
+
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    //var role = "";
+    //if (User.IsInRole("Admin"))
+    //{
+    //    role = "Admin";
+    //}
+}
+
+
+<div class="row" ng-show="ShowingDiv=='Liste'" ng-cloak>
+    @*|| ShowingDiv=='detail'*@
+    <div class="col">
+        <section class="card card-primary">
+            <header class="card-header">
+                <!-- <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div> -->
+                <div class="row">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <h2 class="card-title"><i class="fal fa-list"></i> Ticket Listesi</h2>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center justify-content-end" ng-show="Permission.Add == 1">
+                        @*<button id="addToTable" class="btn btn-success excel pull-right" ng-click="AddItem()" style="margin-left:auto;margin-right:10px;"><i class="fas fa-plus"></i> Excelden Teklif Ekle </button>*@
+                        <button id="addToTable" class="btn btn-success pull-right" ng-click="AddItem()"><i class="fas fa-plus"></i> Ticket Ekle </button>
+                    </div>
+                </div>
+            </header>
+            <div class="card-body">
+                <form class="form-horizontal" name="SearchForm" id="SearchForm" novalidate ng-submit="Search(SearchForm.$valid)">
+                    <div class="row">
+                        <div class="col-md-2 mb-20">
+                            <select class="form-control" ng-model="FilterFormModel.Direction">
+                                <option value="1" selected>Giden</option>
+                                <option value="2">Gelen</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-20">
+                            <select class="form-control" ng-model="FilterFormModel.IsArchived">
+                                <option value="false">Güncel</option>
+                                <option value="true">Arşiv</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-20">
+                            <select class="form-control" ng-model="FilterFormModel.TicketType" ng-options="item.ID as item.label for item in TicketTypes">
+                                <option value="">Ticket Tipi</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-20">
+                            <select class="form-control" ng-model="FilterFormModel.Status" ng-options="item.ID as item.Name for item in TicketStatus">
+                                <option value="">Durum</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-20">
+                            <select class="form-control" ng-model="FilterFormModel.Priority" ng-options="item.ID as item.Name for item in TicketPriorities">
+                                <option value="">Öncelik</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 mb-20 d-flex justify-content-end">
+                            <input type="button" id="btnCri" ng-click="Filtrele()" value="Listele" class="btn btn-primary" />
+                        </div>
+
+                    </div>
+                    @*<footer class="card-footer">
+                            <div class="row justify-content-end">
+                                <div class="col-sm-6">
+                                    <input type="button" id="btnCri" ng-click="Filtrele()" value="Listele" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </footer>*@
+
+                </form>
+
+                @*<div class="row">
+                        <div class="col-sm-12">
+                                <button id="addToTable" class="btn btn-primary pull-right" ng-click="AddItem()">Ekle <i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>*@
+                <table @*ng-if="isUserLogged"*@ id="entry-grid" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" class="table table-bordered table-striped mb-0" @*class="table table-hover nowrap"*@></table>
+            </div>
+        </section>
+    </div>
+</div>
+ 

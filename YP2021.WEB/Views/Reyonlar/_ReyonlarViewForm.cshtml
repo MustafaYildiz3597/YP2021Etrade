@@ -1,0 +1,93 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<div class="card" ng-show="ShowingDiv=='view'" ng-cloak>
+    <div class="card-body p0">
+
+        <header class="card-header alt-title">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn geri-btn" type="button" ng-click="BackToList()"><i class="fas fa-reply text-white"></i></button>
+                    <h2 ng-bind="'Reyon ' + breadcrumbs"></h2>
+                </div>
+            </div>
+        </header>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">Reyon</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.NAME">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">Reyon EN</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.NAME_EN">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">Reyon DE</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.NAME_DE">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">Reyon FR</label>
+                        <div class="col-sm-12">
+                            <input type="text" readonly class="form-control" ng-model="FormModel.NAME_FR">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-20">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label">Sort</label>
+                        <div class="col-sm-12">
+                            <input type="number" readonly class="form-control" ng-model="FormModel.SORT">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-20">
+                    <!--Aktif-->
+                    <div class="form-group row">
+                        <label class="col-lg-12 control-label">Aktif/Pasif</label>
+                        <div class="col-lg-12">
+                            <div class="checkbox-default">
+                                <input type="checkbox" disabled="disabled" ng-model="FormModel.ENABLED">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

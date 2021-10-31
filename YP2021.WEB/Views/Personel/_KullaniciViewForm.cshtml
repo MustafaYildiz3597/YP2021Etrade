@@ -1,0 +1,297 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<div class="row" ng-show="ShowingDiv=='view'" ng-cloak>
+
+    @*<div class="col">*@
+        <section class="card">
+            <header class="card-header">
+                <div class="row">
+                    <div class="col-8">
+                        <button class="btn geri-btn" type="button" ng-click="BackToList()"><i class="fas fa-reply"></i></button>
+                        <h2 class="card-title mt-2"><i class="fas fa-user mr-2"></i><span>Personel Görüntüle</span></h2>
+                    </div>
+                    @*<div class="col-4 d-flex align-items-center justify-content-end">
+                        <button type="button" class="btn sari-btn" ng-click="BackToList()"><i class="fas fa-arrow-left mr-2"></i> Listeye Dön</button>
+                    </div>*@
+                </div>
+            </header>
+            <div class="card-body">
+                <section class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3 mb-20">
+                                <img id="qimgview" src="~/Content/images/noimage.png" class="rounded img-fluid" alt="" />
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    @*<div class="col-md-3 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-sm-12 control-label" for="Role">Departman/Yetki </label>
+                                            <div class="col-sm-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.RoleName">
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                    <div class="col-md-6 mb-20">
+                                        <!--Görev Ünvan-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="JobTitle">Görev/Unvan @*<span class="required">*</span>*@</label>
+                                            <div class="col-lg-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.JobTitleName">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <!--Kullanıcı Adı-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label">Kullanıcı Adı</label>
+                                            <div class="col-lg-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.UserName">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <!--Adı-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="FirstName">Ad <span class="required">*</span></label>
+                                            <div class="col-lg-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.FirstName">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <!--Soyadı-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="LastName">Soyad  <span class="required">*</span></label>
+                                            <div class="col-lg-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.LastName">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <!--Cep Telefonu-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="GSMNumber">Cep Telefonu <span class="required">*</span></label>
+                                            <div class="col-lg-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.GSMNumber">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <!--TCKNo-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="TCIdentityNo">TCKN <span class="required">*</span></label>
+                                            <div class="col-lg-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.TCIdentityNo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <!--E-Posta-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="Email">Eposta Adresi <span class="required">*</span></label>
+                                            <div class="col-lg-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.Email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <!--Başlangış Tarihi-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="StartDate">Başlangış Tarihi</label>
+                                            <div class="col-lg-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.StartDate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <!--Doğum Tarihi-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label">Doğum Tarihi </label>
+                                            <div class="col-lg-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.BirthDate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <!--skype-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label" for="Skype">Skype <span class="required">*</span></label>
+                                            <div class="col-lg-12">
+                                                <input type="text" readonly class="form-control" ng-model="FormModel.Skype">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <!--Aktif-->
+                                        <div class="form-group row">
+                                            <label class="col-lg-12 control-label">Aktif/Pasif</label>
+                                            <div class="col-lg-12">
+                                                <div class="checkbox-default">
+                                                    <input type="text" readonly class="form-control" ng-model="FormModel.Status">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group row">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-sm-12 col-form-label">E.TARİH</label>
+                                            <div class="col-sm-12">
+                                                <span class="form-control" ng-bind="FormModel.ADDED | date : 'yyyy-MM-dd HH:mm:ss'"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-sm-12 col-form-label">EKLEYEN</label>
+                                            <div class="col-sm-12">
+                                                <span class="form-control" ng-bind="FormModel.ADDEDBY"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-sm-12 col-form-label">G.TARİH</label>
+                                            <div class="col-sm-12">
+                                                <span class="form-control" ng-bind="FormModel.UPDATED | date : 'yyyy-MM-dd HH:mm:ss'"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-20">
+                                        <div class="form-group row">
+                                            <label class="col-sm-12 col-form-label">GÜNCELLEYEN</label>
+                                            <div class="col-sm-12">
+                                                <span class="form-control" ng-bind="FormModel.UPDATEDBY"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-6 mb-20">
+            <!--Kaydeden-->
+            <div class="form-group row">
+                <label class="col-lg-12 control-label">Kayıt Yapan</label>
+                <div class="col-lg-12">
+                    <p class="form-control" ng-bind="FormModel.CreateFullName"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-20">
+            <!--Kayıt tarihi-->
+            <div class="form-group row">
+                <label class="col-lg-12 control-label">Kayıt Tarihi</label>
+                <div class="col-lg-12">
+                    <p class="form-control" ng-bind="FormModel.CreateDT | date:'dd/MM/yyyy'"></p>
+                </div>
+            </div>
+        </div>*@
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+                @*<div class="row">
+                        <div class="col-lg-12">
+                            <div class="tabs">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item active">
+                                        <a class="nav-link show active" href="#kisisel_bilgiler" data-toggle="tab">Kişisel Bilgiler</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#profil_resmi" data-toggle="tab">Profil Resmi</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#yetkiler" data-toggle="tab">Yetkiler</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="kisisel_bilgiler" class="tab-pane active show">
+                                        <div id="overview" class="tab-pane active">
+                                            <div id="">
+
+                                            </div>
+                                        </div>
+                                        <div id="edit" class="tab-pane">
+                                        </div>
+                                    </div>
+                                    <div id="profil_resmi" class="tab-pane">
+                                        <div>
+                                            <section class="card">
+                                                <div class="card-body">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-3">
+                                                            <div class="thumb-info mb-3">
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <a class="btn   btn-danger kirmizi-bg" ng-click="deleteFilesImg()"
+                                                                   data-toggle="tooltip" data-original-title="Sil" value="Sil"
+                                                                   ng-show="silImgBtnGoster">
+                                                                    <span style="font-size: 48px; color: Dodgerblue;">
+                                                                        <i class="fas fa-window-close"></i>
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-3 control-label text-lg-right pt-2">Resim Yükle</label>
+                                                        <div class="col-lg-6">
+
+                                                                     </div>
+
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </div>
+                                    <div id="yetkiler" class="tab-pane">
+                                        <div id="">
+                                            <section class="card">
+                                                <div class="card-body">
+
+
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>*@
+            </div>
+        </section>
+    @*</div>*@
+</div>

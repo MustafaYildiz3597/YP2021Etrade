@@ -1,0 +1,101 @@
+﻿@{
+    var inputpattern = String.Empty;
+    if (ViewBag.Device == "iphone")
+    {
+        inputpattern = "pattern=[0-9]*";
+    }
+    else if (ViewBag.Device == "web")
+    {
+        // web
+    }
+    else
+    {
+        inputpattern = "inputmode=numeric";
+    }
+
+    var role = "";
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+}
+
+<style>
+    th td {
+        min-width: 70px;
+    }
+</style>
+
+<div ng-show="ShowingDiv=='Liste'" ng-cloak>
+    @*|| ShowingDiv=='detail'*@
+
+    <section class="card card-primary">
+        <header class="card-header">
+            <!-- <div class="card-actions">
+                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+            </div> -->
+            <div class="row">
+                <div class="col-md-5">
+                    <h2 class="card-title"><i class="fal fa-list"></i> Tedarikçi Ürünleri Listesi</h2>
+                </div>
+                <div class="col-md-7 d-flex align-items-center mobil-buttons-4">
+                    <a href="/tedarikciurun/veriyukle" class="btn btn-success pull-right excel" style="margin-left:auto;">Excelden Yükle <i class="fas fa-plus"></i></a>
+                    @*<button class="btn btn-success pull-right mr-2" ng-click="ShowMUGridAddPopup()" style="margin-left:auto;"><i class="fas fa-upload text-white"> </i> Excel'den Müşteri Ekle (GridAdd)</button>*@
+                    <button ng-show="Permission.Add == 1" class="btn btn-success pull-right mr-2 mavi-btn" ng-click="ShowTUGridAddPopup()"><i class="fas fa-upload text-white"></i>  Ekle (GridAdd)</button>
+                    <button ng-show="Permission.Edit == 1" class="btn btn-success pull-right mr-2 sari-btn" ng-click="ShowTUGridEditPopup()"><i class="fas fa-upload text-white"></i> Düzenle (GridEdit)</button>
+                    <button ng-show="Permission.Add == 1" id="addToTable" class="btn btn-success pull-right" ng-click="AddItem()">Ekle <i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+        </header>
+        <div class="card-body">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <form class="form-horizontal ng-pristine ng-valid" style="margin-bottom:20px;" name="SearchForm" id="SearchForm" novalidate="" @*ng-submit="Search(SearchForm.$valid)"*@>
+                                <div class="row">
+                                    <div class="col-xl-5 mb-20">
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                @*<select class="form-control form-control-sm ng-pristine ng-valid ng-touched" name="cmbFilterProductSegment" ng-model="FilterFormModel.ProductSectionID" ng-options="psecitem.SECID as psecitem.NAME for psecitem in ProductSections"><option value="" class="" selected="selected">--Tüm Segmentler--</option><option value="number:4" label="Binek Araç">Binek Araç</option><option value="number:8" label="Dorse Parçaları">Dorse Parçaları</option><option value="number:6" label="Otobüs Parçaları">Otobüs Parçaları</option><option value="number:21" label="test">test</option><option value="number:7" label="Tır Parçaları">Tır Parçaları</option><option value="number:5" label="Traktör Parçaları">Traktör Parçaları</option></select>*@
+                                                <ui-select id="criMusteri" name="criMusteri" ng-model="FilterFormModel.selectedFirms" theme="select2" ng-disabled="ctrl.disabled" sortable="true"
+                                                           close-on-select="true" style="width: 100%;">
+                                                    <ui-select-match placeholder="Tedarikçi Seç..." allow-clear="true">{{FilterFormModel.selectedFirms.FIRMA_ADI}}</ui-select-match>
+                                                    <ui-select-choices repeat="person in Tedarikciler | propsFilter: {ID: $select.search, FIRMA_ADI: $select.search}">
+                                                        <div ng-bind-html="person.FIRMA_ADI | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-5">
+                                        <div class="form-group row">
+
+                                            <div class="col-sm-12">
+                                                <input type="text" ng-model="FilterFormModel.ProductSearchText" placeholder="Ürün Ara" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-2">
+                                        <input type="button" id="btnCri" ng-click="Filtrele()" value="Listele" class="btn btn-primary" />
+                                        @*<input type="submit" id="btnCri"  value="Listele" class="btn btn-primary btn-sm">*@
+                                    </div>
+                                </div>
+                            </form>
+
+                            <table id="entry-grid" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" class="table table-bordered table-striped mb-0 " @*class="table table-hover nowrap"*@></table>
+
+                        </div>
+                    </div>
+ 
+                   
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+</div>

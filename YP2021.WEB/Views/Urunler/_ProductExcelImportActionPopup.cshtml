@@ -1,0 +1,70 @@
+﻿<!-- Modal Form -->
+<div id="modalImportPopup" class="modal-block modal-block-primary mfp-hide" style="max-width: 1200px;">
+    <section class="card">
+        <header class="card-header bg-primary text-white">
+            <div class="row">
+                <div class="col-md-11">
+                    <h2 class="card-title text-white" ng-bind="'Toplu Ürün Yükleme (Excel) ' + MUPopupTitle"></h2>
+                </div>
+            </div>
+        </header>
+
+        <div class="card-body">
+
+            <form class="form-horizontal" name="UploadExcelForm" id="UploadExcelForm" novalidate ng-submit="UploadSelectedRows(UploadExcelForm.$valid)">
+                <div class="form-group row">
+                    <label class="col-lg-3 control-label text-lg-right pt-2" for="cmbProductSegment">Segment</label>
+                    <div class="col-lg-6">
+                        <select class="form-control" ng-class="{'error': (UploadExcelForm.cmbProductSegment.$dirty || UploadExcelForm.$submitted) && UploadExcelForm.cmbProductSegment.$invalid}" name="cmbProductSegment" ng-model="FormModel.SECID"
+                                ng-options="psecitemD.SECID as psecitemD.NAME for psecitemD in ProductSections" required>
+                            <option value="">--Seçiniz--</option>
+                        </select>
+                        <span style="width:100%;" ng-show="(UploadExcelForm.cmbProductSegment.$dirty || UploadExcelForm.$submitted) && UploadExcelForm.cmbProductSegment.$invalid">
+                            <label class="error" ng-show="UploadExcelForm.cmbProductSegment.$error.required">Zorunlu Alan</label>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-3 control-label text-lg-right pt-2" for="cmbProductMCat">Ana Kategoriler</label>
+                    <div class="col-lg-6">
+                        <select class="form-control" ng-class="{'error': (UploadExcelForm.cmbProductMCat.$dirty || UploadExcelForm.$submitted) && UploadExcelForm.cmbProductMCat.$invalid}" name="cmbProductMCat" ng-model="FormModel.MCATID"
+                                ng-options="pmcatitemD.MCATID as pmcatitemD.NAME for pmcatitemD in ProductMainCategories | filter:criMatchMaincat()" required>
+                            <option value="">--Seçiniz--</option>
+                        </select>
+                        <span style="width:100%;" ng-show="(UploadExcelForm.cmbProductMCat.$dirty || UploadExcelForm.$submitted) && UploadExcelForm.cmbProductMCat.$invalid">
+                            <label class="error" ng-show="UploadExcelForm.cmbProductMCat.$error.required">Zorunlu Alan</label>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-3 control-label text-lg-right pt-2" for="cmbProductCat">Kategoriler</label>
+                    <div class="col-lg-6">
+                        <select class="form-control" ng-class="{'error': (UploadExcelForm.cmbProductCat.$dirty || UploadExcelForm.$submitted) && UploadExcelForm.cmbProductCat.$invalid}" name="cmbProductCat" ng-model="FormModel.CATID"
+                                ng-options="item.CATID as item.NAME for item in ProductCategories | filter:criMatchCat()" required>
+                            <option value="">--Seçiniz--</option>
+                        </select>
+                        <span style="width:100%;" ng-show="(UploadExcelForm.cmbProductCat.$dirty || UploadExcelForm.$submitted) && UploadExcelForm.cmbProductCat.$invalid">
+                            <label class="error" ng-show="UploadExcelForm.cmbProductCat.$error.required">Zorunlu Alan</label>
+                        </span>
+                    </div>
+                </div>
+
+                <footer class="card-footer">
+                    <div class="row justify-content-end">
+                        <div class="col-sm-6">
+                            @*<button class="btn btn-primary">Submit</button>*@
+                            <input type="submit" class="btn btn-primary" value="Yükle" @*ng-click="UploadSelectedRows()"*@ />
+                            @*<button type="reset" class="btn btn-default">Reset</button>*@
+                        </div>
+                    </div>
+                </footer>
+
+            </form>
+        </div>
+    </section>
+</div>
+
+
+

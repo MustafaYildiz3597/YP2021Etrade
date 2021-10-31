@@ -1,0 +1,80 @@
+﻿<!-- Modal Form -->
+<div id="modalMUGridEditPopup" class="modal-block modal-block-primary mfp-hide">
+    <section class="card">
+        <header class="card-header bg-primary text-white">
+            <div class="row">
+                <div class="col-10">
+                    <h2 class="card-title text-white" ng-bind="'Müşteri Ürünleri (Grid Edit)'"></h2>
+                </div>
+                <div class="col-2 text-right">
+                    <button class="btn kapat-btn pull-right" ng-click="ClosePopup()"><i class="fas fa-times text-white"></i></button>
+                </div>
+            </div>
+        </header>
+
+        <div class="card-body">
+
+            <div class="alert alert-primary alert-dismissible fade show" role="alert" ng-show="alert==true">
+                <div ng-bind="'Toplam kayıt adedi: ' + TotalCount"></div>
+                <div ng-bind="'Güncellenen kayıt adedi: ' + SuccededCount"></div>
+                <div>
+                    <ul>
+                        <li ng-repeat="item in ReturnObj">{{item.ID + " " + item.Text}}</li>
+                    </ul>
+                </div>
+                <button type="button" class="close" @*data-dismiss="alert"*@ aria-label="Close" ng-click="alert=false;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form class="form-horizontal" name="GridEditForm" novalidate>
+
+                @*{{GridEditModel}}*@
+                <div class="overflow-x">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                @*<th>MPID</th>*@
+                                <th>BU Numarası</th>
+                                <th>Firma Adı</th>
+                                <th>Ürün No</th>
+                                <th>Ürün Adı</th>
+                                <th>Eklenme Tarihi</th>
+                                <th>Güncellenme Tarihi</th>
+                                <th>Fiyat</th>
+                                <th>P.B.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="muitem in GridEditModel">
+                                @*<td ng-bind="muitem.MPID"></td>*@
+                                <td ng-bind="muitem.BUKOD"></td>
+                                <td ng-bind="muitem.FIRMA_ADI"></td>
+                                <td><input class="form-control form-text" type="text" ng-model="muitem.XPSNO" /></td>
+                                <td><input class="form-control form-text" type="text" ng-model="muitem.NAME" /></td>
+                                <td ng-bind="muitem.CreatedOn"></td>
+                                <td ng-bind="muitem.UPDATED"></td>
+                                <td><input type="number" yr-integer ng-model="muitem.PRICE" class="form-text" /></td>
+                                <td>
+                                    <select class="form-control form-text" ng-model="muitem.CURRENCY" ng-change="CurrencyChanged(muitem.MPID, muitem.CURRENCY)"
+                                            ng-options="critem.ID as critem.Code for critem in Currencies">
+                                        <option value="">--Seçiniz--</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <footer class="card-footer">
+                    <div class="row justify-content-end">
+                        <input type="submit" class="btn pink-btn" value="Güncelle" ng-click="UpdateGridEdit()" />
+                    </div>
+                </footer>
+
+            </form>
+        </div>
+    </section>
+</div>
+
+
+
